@@ -9,6 +9,9 @@ public class QuickSort {
 
     // 快速排序，a是数组，n表示数组的大小
     public static void quickSort(int[] a, int n) {
+
+
+        print(a);
         quickSortInternally(a, 0, n - 1);
     }
 
@@ -17,8 +20,19 @@ public class QuickSort {
         if (p >= r) return;
 
         int q = partition(a, p, r); // 获取分区点
+
+        print(a);
+
         quickSortInternally(a, p, q - 1);
         quickSortInternally(a, q + 1, r);
+    }
+
+    public static void print(int[] a) {
+        StringBuilder sb=new StringBuilder();
+        for (int i : a) {
+            sb.append(i+" ");
+        }
+        System.out.println("a=" + sb);
     }
 
     private static int partition(int[] a, int p, int r) {

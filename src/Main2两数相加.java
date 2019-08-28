@@ -23,7 +23,6 @@ public class Main2两数相加 {
      * }
      */
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-//todo
         ListNode result = new ListNode(0);
         ListNode current = result;
 
@@ -51,4 +50,18 @@ public class Main2两数相加 {
     }
 
 
+    public ListNode add(ListNode l1, ListNode l2) {
+
+        ListNode result = new ListNode(0);
+
+        int advance = 0;
+        while (true) {
+            int tempResult = l1.val + l2.val + advance;
+
+
+
+        }
+
+
+    }
 }
