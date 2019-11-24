@@ -38,30 +38,21 @@ public class Main2两数相加 {
 
             carry = added / 10;
 
-            result.val = added % 10;
+            current.next = new ListNode(added % 10);
+            current = current.next;
 
 
-            a = a.next;
-            b = b.next;
+            if (a.next != null) {
+                a = a.next;
+            }
+            if (b.next != null)
+                b = b.next;
         }
 
+        if (carry>0)
+            current.next=new ListNode(1);
 
-        return result;
+        return result.next;
     }
 
-
-    public ListNode add(ListNode l1, ListNode l2) {
-
-        ListNode result = new ListNode(0);
-
-        int advance = 0;
-        while (true) {
-            int tempResult = l1.val + l2.val + advance;
-
-
-
-        }
-
-
-    }
 }
