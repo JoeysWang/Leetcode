@@ -5,11 +5,14 @@ public class Main703数据流中的第K大元素 {
     /**
      * 设计一个找到数据流中第K大元素的类（class）。注意是排序后的第K大元素，不是第K个不同的元素。
      * <p>
-     * 你的 KthLargest 类需要一个同时接收整数 k 和整数数组nums 的构造器，它包含数据流中的初始元素。每次调用 KthLargest.add，返回当前数据流中第K大的元素。
+     * 你的 KthLargest 类需要一个同时接收整数 k 和整数数组nums 的构造器，它包含数据流中的初始元素。
+     * 每次调用 KthLargest.add，返回当前数据流中第K大的元素。
      * <p>
      * https://leetcode-cn.com/problems/kth-largest-element-in-a-stream
      */
 
+    //用堆来做，堆里放k个元素，PriorityQueue实际上就是一个小顶堆，
+    //add进去一个新数，判断堆顶和这个数，如果堆顶小，就把堆顶的最小数弹出去
     public static void main(String[] args) {
         PriorityQueue<Integer> queue = new PriorityQueue<>();
 
