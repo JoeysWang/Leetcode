@@ -22,6 +22,7 @@ public class Main23合并K个排序列表 {
 
         int mid = (high - low) / 2 + low;
 
+
         ListNode l1 = sort(lists, low, mid);
         ListNode l2 = sort(lists, mid + 1, high);
 
