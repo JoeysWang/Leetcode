@@ -19,6 +19,7 @@
  *
  */
 public class Main72编辑距离 {
+
     public static void main(String[] args) {
         int min = minDistance("aaa", "abb");
         System.out.println("min " + min);

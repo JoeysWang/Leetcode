@@ -12,38 +12,41 @@ public class Main102二叉树的层次遍历 {
     }
 
     /**
-     * 宽度优先搜索（BFS）
+     * 广度优先搜索（BFS）
      * 我们按照高度顺序一层一层的访问整棵树，高层次的节点将会比低层次的节点先被访问到。
+     * 思路：创建一个queue,这个队列的第一个元素就是root节点
+     * 然后不断循环levelSize次，这个levelSize就是每层的元素数量
+     * 从队列头部取出一个节点，在队列的尾部加入这个取出来的节点的子节点
+     *
+     * poll是弹出首元素，peek是获取首元素不弹出
      */
     private List<List<Integer>> bfs(TreeNode root) {
         if (root == null) return new ArrayList<>();
-
         List<List<Integer>> result = new ArrayList<>();
+        //初始化队列
         Queue<TreeNode> queue = new LinkedList<>();
-
         queue.add(root);
-
         while (!queue.isEmpty()) {
+            /**
+             * 获得当前层数的元素数量
+             */
             int levelSize = queue.size();
-            List<Integer> currentResult = new ArrayList<>();
 
-
+            List<Integer> currentLevelVal = new ArrayList<>();
+            /**
+             * 然后循环levelSize次，目的是把每个元素都从queue里弹出，
+             * 并且把弹出的元素的子元素都加到队列的最后面
+             */
             for (int i = 0; i < levelSize; i++) {
-                TreeNode currentNode = queue.poll();
-
-                if (currentNode.left != null)
-                    queue.add(currentNode.left);
-                if (currentNode.right != null)
-                    queue.add(currentNode.right);
-
-                currentResult.add(currentNode.val);
+                TreeNode treeNode = queue.poll();
+                currentLevelVal.add(treeNode.val);
+                if (treeNode.left != null) queue.add(treeNode.left);
+                if (treeNode.right != null) queue.add(treeNode.right);
             }
-            result.add(currentResult);
+            result.add(currentLevelVal);
         }
-
         return result;
     }
-
 
     /**
      * 深度优先搜索（DFS）
