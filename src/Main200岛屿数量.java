@@ -17,27 +17,27 @@ public class Main200岛屿数量 {
     public static void main(String[] args) {
         Main200岛屿数量 solution = new Main200岛屿数量();
 //
-        char[][] grid1 = {
-                {'1', '1', '1', '1', '0'},
-                {'1', '1', '0', '1', '0'},
-                {'1', '1', '0', '0', '0'},
-                {'0', '0', '0', '0', '0'}};
-        int numIslands1 = solution.numIslands(grid1);
-        System.out.println(numIslands1);
-
-        char[][] grid2 = {
-                {'1', '1', '0', '0', '0'},
-                {'1', '1', '0', '0', '0'},
-                {'0', '0', '1', '0', '0'},
-                {'0', '0', '0', '1', '1'}};
-        int numIslands2 = solution.numIslands(grid2);
-        System.out.println(numIslands2);
-        char[][] grid3 = {
-                {'1', '1', '1'},
-                {'0', '1', '0'},
-                {'1', '1', '1'}};
-        int numIslands3 = solution.numIslands(grid3);
-        System.out.println(numIslands3);
+//        char[][] grid1 = {
+//                {'1', '1', '1', '1', '0'},
+//                {'1', '1', '0', '1', '0'},
+//                {'1', '1', '0', '0', '0'},
+//                {'0', '0', '0', '0', '0'}};
+//        int numIslands1 = solution.numIslands(grid1);
+//        System.out.println(numIslands1);
+//
+//        char[][] grid2 = {
+//                {'1', '1', '0', '0', '0'},
+//                {'1', '1', '0', '0', '0'},
+//                {'0', '0', '1', '0', '0'},
+//                {'0', '0', '0', '1', '1'}};
+//        int numIslands2 = solution.numIslands(grid2);
+//        System.out.println(numIslands2);
+//        char[][] grid3 = {
+//                {'1', '1', '1'},
+//                {'0', '1', '0'},
+//                {'1', '1', '1'}};
+//        int numIslands3 = solution.numIslands(grid3);
+//        System.out.println(numIslands3);
         char[][] grid4 = {
                 {'1', '1', '1', '1', '1', '1', '1'},
                 {'0', '0', '0', '0', '0', '0', '1'},
@@ -130,7 +130,7 @@ public class Main200岛屿数量 {
     int mI;
     int mJ;
 
-    private int  numIslandsUN(char[][] grid) {
+    private int numIslandsUN(char[][] grid) {
 
         rows = grid.length;
         if (rows == 0) return 0;
@@ -184,40 +184,37 @@ public class Main200岛屿数量 {
             }
         }
 
+
         public int find(int xy) {
-            if (roots[xy] != xy)
-                roots[xy] = find(roots[xy]);
-            return roots[xy];
-        }
-//        public int find(int xy) {
-//            //去找这个坐标的root
-//            int root = roots[xy];
-//
-//            //如果（它的根的根 != 它的根），说明还没到顶，继续找
-//
-//            while (roots[root] != root) {
-//                root = roots[root];
+            //去找这个坐标的root
+            int root = roots[xy];
+
+            //如果（它的根的根 != 它的根），说明还没到顶，继续找
+
+            while (roots[root] != root) {
+                root = roots[root];
+            }
+
+            //找到了root就是答案，但是这里要优化一下这个xy的指向，
+            //使它所有的父节点都直接指向最顶的根
+//            while (roots[xy] != xy) {
+//                int tempRoot = roots[xy];
+//                roots[xy] = root;
+//                xy = tempRoot;
 //            }
-//
-//            //找到了root就是答案，但是这里要优化一下这个xy的指向，
-//            //使它所有的父节点都直接指向最顶的根
-////            while (roots[xy] != xy) {
-////                int tempRoot = roots[xy];
-////                roots[xy] = root;
-////                xy = tempRoot;
-////            }
-//
-//            return root;
-//        }
+
+            return root;
+        }
 
         public void union(int xy1, int xy2) {
             int root1 = find(xy1);
             int root2 = find(xy2);
 
+            //todo
             if (root1 != root2) {
                 //把2的root指向1
+//                roots[xy2] = root1; 错误的
                 roots[root1] = root2;
-
                 //每合并一次，count就要-1
                 count--;
             }
