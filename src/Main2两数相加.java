@@ -15,44 +15,30 @@ public class Main2两数相加 {
 //    原因：342 + 465 = 807
 
     /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode(int x) { val = x; }
-     * }
+     * 注意 最后一个进位  还有两个node不一样长的判空！
      */
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode result = new ListNode(0);
-        ListNode current = result;
+    public static class Solution {
+        public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+            ListNode result = new ListNode(0);
+            ListNode resultRecord = result;
+            int overflow = 0;
+            while (l1 != null || l2 != null) {
 
-        ListNode a = l1;
-        ListNode b = l2;
-        int carry = 0;
-        while (a != null || b != null) {
-
-            int va = a != null ? a.val : 0;
-            int vb = b != null ? b.val : 0;
-
-            int added = va + vb + carry;
-
-            carry = added / 10;
-
-            current.next = new ListNode(added % 10);
-            current = current.next;
-
-
-            if (a.next != null) {
-                a = a.next;
+                int now = (l1 != null ? l1.val : 0) + (l2 != null ? l2.val : 0) + overflow;
+                int nodeVal = (now) % 10;
+                resultRecord.next = new ListNode(nodeVal);
+                overflow = now / 10;
+                if (l1 != null)
+                    l1 = l1.next;
+                if (l2 != null)
+                    l2 = l2.next;
+                resultRecord = resultRecord.next;
             }
-            if (b.next != null)
-                b = b.next;
+            if (overflow != 0) {
+                resultRecord.next = new ListNode(overflow);
+            }
+
+            return result.next;
         }
-
-        if (carry>0)
-            current.next=new ListNode(1);
-
-        return result.next;
     }
-
 }

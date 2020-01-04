@@ -1,3 +1,6 @@
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 public class Main4寻找两个有序数组的中位数 {
 
 //    给定两个大小为 m 和 n 的有序数组 nums1 和 nums2。
@@ -21,8 +24,20 @@ public class Main4寻找两个有序数组的中位数 {
 
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 
-        double ans=0.0;
+        double ans = 0.0;
 
+//        if (nums1.length == 0) {
+//            if ((nums2.length & 1) == 1) {
+//                return nums2[nums2.length / 2];
+//            } else
+//                return (nums2[nums2.length / 2] + nums2[nums2.length / 2 - 1]) / 2.0;
+//        }
+
+
+        int capacity = 0;
+        if (((nums1.length + nums2.length) & 1) == 1) {
+
+        }
 
         return ans;
     }
