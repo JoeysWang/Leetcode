@@ -9,7 +9,7 @@ public class Main14最长公共前缀 {
     /**
      * 二分查找计算中位数的公式：
      *
-     * int overflow = (right - left) & 1; //是否为奇数，奇数在后面+1
+     * int overflow = (right - left) & 1; //是否为奇数，奇数在后面+1·
      * int mid = left + (right - left) / 2 + overflow;
      *
      * 0 1 2 3 4 5

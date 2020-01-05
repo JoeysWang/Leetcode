@@ -26,12 +26,12 @@ public class SingleNumber {
 
     public static class Solution {
         public int singleNumber(int[] nums) {
-            Queue<Integer> queue = new PriorityQueue<>();
-
+            int a = 0;
             for (int num : nums) {
-                queue.offer(num);
+                a = a ^ num;
 
             }
+
             return 0;
         }
     }

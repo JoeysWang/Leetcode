@@ -38,35 +38,58 @@ package 腾讯;
 //        0 < indexes[i] < S.length <= 1000
 //        给定输入中的所有字符都是小写字母。
 
-public class 字符串S替换 {
+import java.util.Arrays;
+
+public class Main833字符串中的查找与替换 {
 
 
     public static void main(String[] args) {
 
     }
 
+    /**
+     * 用一个数组matchedIndex，matchedIndex里面保存的也是index,
+     * 这个index就是题目给的需要替换的位置
+     * 输入：S = "abcd", indexes = [0,2], sources = ["a","cd"], targets = ["eee","ffff"]
+     * 输出："eeebffff"
+     *
+     * matchedIndex[0]=0;
+     *
+     * matchedIndex[2]代表"abcd"的坐标是2需要用indexes[1]来替换
+     * matchedIndex[2]=1;
+     */
     public static class Solution {
-        public String findReplaceString(String s, int[] indexes, String[] sources, String[] targets) {
-            StringBuilder sb = new StringBuilder();
 
-            int lastIndex = 0;
+        public String findReplaceString(String s, int[] indexes, String[] sources, String[] targets) {
+
+            int[] matchedIndex = new int[s.length()];
+            Arrays.fill(matchedIndex, -1);
 
             for (int i = 0; i < indexes.length; i++) {
-                int currentIndex = indexes[i];
-
-                sb.append(s.substring(lastIndex, currentIndex));
-
-                String remain = s.substring(currentIndex + lastIndex);
-                if (remain.startsWith(sources[i])) {
-                    sb.append(targets[i]);
-                    lastIndex = targets[i].length();
+                int index = indexes[i];
+                String find = s.substring(index, index + sources[i].length());
+                if (find.equals(sources[i])) {
+                    matchedIndex[index] = i;
                 }
+            }
 
+            StringBuilder ans = new StringBuilder();
+
+            int p = 0;
+
+            while (p < s.length()) {
+                if (matchedIndex[p] >= 0) {
+                    ans.append(targets[matchedIndex[p]]);
+                    p += sources[matchedIndex[p]].length();
+                } else {
+                    ans.append(s.charAt(p));
+                    p++;
+                }
 
             }
 
 
-            return s;
+            return ans.toString();
         }
     }
 
