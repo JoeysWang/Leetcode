@@ -20,6 +20,7 @@ public class Main148排序链表 {
     public static class Solution {
         public ListNode sortList(ListNode head) {
 
+            return null;
         }
     }
 }
