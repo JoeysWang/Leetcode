@@ -16,7 +16,7 @@ public class Main11盛水最多的容器 {
             int right = height.length - 1;
 
             int area = 0;
-            while (true) {
+            while (left != right) {
 
                 int min = Math.min(height[left], height[right]);
                 if (height[left] == height[right])
@@ -28,8 +28,7 @@ public class Main11盛水最多的容器 {
                 } else
                     right--;
 
-                if (left + 1 == right)
-                    break;
+
             }
 
 
