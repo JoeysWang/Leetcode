@@ -1,5 +1,7 @@
 package sort;
 
+import java.util.Arrays;
+
 public class QuickSort {
 
     public static void main(String[] args) {
@@ -9,54 +11,52 @@ public class QuickSort {
 
     // 快速排序，a是数组，n表示数组的大小
     public static void quickSort(int[] a, int n) {
+        System.out.println(Arrays.toString(a) + " -- begin ");
 
-
-        print(a);
-        quickSortInternally(a, 0, n - 1);
+        quickSortInternally(a, 0, n);
     }
 
-    // 快速排序递归函数，p,r为下标
-    private static void quickSortInternally(int[] a, int p, int r) {
-        if (p >= r) return;
+    // 快速排序递归函数，begin,r为下标
+    private static void quickSortInternally(int[] a, int begin, int end) {
+        if (begin >= end) return;
+        int pivot = partition(a, begin, end); // 获取分区点
+        System.out.println(Arrays.toString(a) + " -- begin=" + begin + " end=" + end + " pivot=" + pivot);
 
-        int q = partition(a, p, r); // 获取分区点
-
-        print(a);
-
-        quickSortInternally(a, p, q - 1);
-        quickSortInternally(a, q + 1, r);
+        quickSortInternally(a, begin, pivot);
+        quickSortInternally(a, pivot + 1, end);
     }
 
-    public static void print(int[] a) {
-        StringBuilder sb=new StringBuilder();
-        for (int i : a) {
-            sb.append(i+" ");
-        }
-        System.out.println("a=" + sb);
-    }
 
-    private static int partition(int[] a, int p, int r) {
-        int pivot = a[r];
-        int i = p;
-        for (int j = p; j < r; ++j) {
-            if (a[j] < pivot) {
-                if (i == j) {
-                    ++i;
-                } else {
-                    int tmp = a[i];
-                    a[i++] = a[j];
-                    a[j] = tmp;
-                }
+    /**
+     * Partition函数 , 把一个数组分割开来，
+     * 返回一个pivot， pivot左边的都比他小，pivot右边的都比他大
+     *
+     * 实际使用时还是双指针，pivot 会在遇到比他小的数字的时候，交换pivot右边的值
+     */
+    private static int partition(int[] nums, int begin, int end) {
+        //枢轴(也可以是在begin和end之间的随机数)
+        int pivot = begin;
+
+        for (int i = begin + 1; i < end; i++) {
+            if (nums[i] < nums[begin]) {
+                swap(nums, pivot + 1, i);
+                pivot++;
+
+            } else {
+                continue;
             }
         }
-        int tmp = a[i];
-        a[i] = a[r];
-        a[r] = tmp;
 
-        System.out.println("i=" + i);
-        return i;
+        swap(nums, begin, pivot);
+
+        return pivot;
     }
 
+    private static void swap(int[] nums, int index1, int index2) {
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+    }
 
 
 }
