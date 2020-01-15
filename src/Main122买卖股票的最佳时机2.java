@@ -1,29 +1,23 @@
-public class Main121买卖股票的最佳时机 {
+public class Main122买卖股票的最佳时机2 {
 
-
+    /**
+     * 可以买卖无数次 ，但是要卖掉才能买
+     */
     public static void main(String[] args) {
-        int[] a = new int[]{7, 1, 5, 3, 6, 4};
 
+
+        int[] a = new int[]{7, 1, 5, 3, 6, 4};
         Solution solution = new Solution();
         System.out.println("max: " + solution.maxProfit(a));
     }
 
     static class Solution {
-
-
         /**
-         * 动态规划
          * dp[i][j]
-         *    dp[i]表示 (j=0没有股票， j=1有股票) 的最大值
+         * i表示第i天， j=1表示持有股票,j=0表示不持有股票,
          *
-         * 状态转移方程
-         *    dp[i][0] = max(昨天没有股票的最大值， 卖掉一股的最大值)
-         *    dp[i][1] = max(昨天有股票的最大值(负的), 买一股的最大值(负的))  //从两个负数里取一个不那么负的
-         *
-         * [7,1,5,3,6,4]
          */
         public int maxProfit(int[] prices) {
-
             if (prices.length < 2) return 0;
             int[][] dp = new int[prices.length][2];
             dp[0][0] = 0;
@@ -39,18 +33,14 @@ public class Main121买卖股票的最佳时机 {
                 );
 
                 dp[i][1] = Math.max(
-                        -prices[i], //买一股
+                        dp[i - 1][0] - prices[i], //买一股之前必须从没有股票的情况里去买
                         dp[i - 1][1]//维持现状
                 );
+                System.out.println("dp[" + i + "][0]=" + dp[i][0] + "   dp[" + i + "][1]=" + dp[i][1] + " #");
             }
 
-
-            for (int i = 0; i < prices.length; i++) {
-                res = Math.max(res, dp[i][0]);
-            }
-
-
-            return res;
+            //返回最后一天没有股票
+            return dp[prices.length - 1][0];
         }
 
     }
