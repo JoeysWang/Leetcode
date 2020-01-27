@@ -14,7 +14,6 @@ public class Main24两两交换链表中的节点 {
 
         ListNode pre = null;
 
-//
         while (current != null) {
             ListNode next = current.next;//2
 
@@ -25,6 +24,11 @@ public class Main24两两交换链表中的节点 {
 
             if (pre != null)
                 pre.next = next;
+            else if (next != null)
+                result.next = next;
+            else
+                result.next = current;
+
 
             pre = current;
             current = current.next;
