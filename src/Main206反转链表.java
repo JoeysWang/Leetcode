@@ -21,7 +21,7 @@ public class Main206反转链表 {
         }
     }
 
-    //
+    // 切断current 和 next的联系
     public ListNode reverseList(ListNode head) {
 
         ListNode current = head;
