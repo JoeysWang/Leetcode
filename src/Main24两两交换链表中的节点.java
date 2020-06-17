@@ -1,3 +1,5 @@
+import data.ListNode;
+
 public class Main24两两交换链表中的节点 {
 
 

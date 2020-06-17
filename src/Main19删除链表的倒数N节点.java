@@ -1,3 +1,5 @@
+import data.ListNode;
+
 public class Main19删除链表的倒数N节点 {
 
     /**

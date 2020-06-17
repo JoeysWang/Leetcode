@@ -1,3 +1,5 @@
+import data.ListNode;
+
 public class Main23合并K个排序列表 {
 
 //

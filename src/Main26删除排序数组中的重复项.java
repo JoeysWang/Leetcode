@@ -17,7 +17,7 @@ public class Main26删除排序数组中的重复项 {
      * 双指针
      */
     static class Solution {
-        public int  removeDuplicates(int[] nums) {
+        public int removeDuplicates(int[] nums) {
 
             int i = 0;
 
@@ -32,7 +32,31 @@ public class Main26删除排序数组中的重复项 {
             }
 
 
-            return i+1;
+            return i + 1;
         }
     }
+
+    static class Solution2 {
+
+
+        public int removeDuplicates(int[] a) {
+            int slow = 0;
+            int fast = 1;
+
+            if (a.length == 0)
+                return 0;
+
+
+            while (fast < a.length) {
+                if (a[slow] != a[fast]) {
+                    slow++;
+                    a[slow] = a[fast];
+
+                }
+                fast++;
+            }
+            return slow + 1;
+        }
+    }
+
 }

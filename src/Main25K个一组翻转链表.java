@@ -1,36 +1,46 @@
+import data.ListNode;
+
 public class Main25K个一组翻转链表 {
+
+    public static void main(String[] args) {
+
+
+    }
+
+    private ListNode reverse(ListNode start, ListNode end) {
+
+        ListNode cur = start;
+        ListNode next = null;
+        ListNode pre = null;
+
+        while (cur != end) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return cur;
+    }
 
 
     public ListNode reverseKGroup(ListNode head, int k) {
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
+        if (head == null) return null;
 
-        ListNode current = dummy;
-
-
-        while (current != null) {
-            current = reverse(current, k);
-
-        }
-
-
-        return dummy.next;
-    }
-
-    private ListNode reverse(ListNode pre, int k) {
-
-        ListNode previous = pre;
-        ListNode current = previous.next;
-
+        ListNode a = head;
+        ListNode b = head;
 
         for (int i = 0; i < k; i++) {
-            if (current == null) return null;
-            ListNode temple = current.next;
-            current.next = previous;
-            previous = current;
-            current = temple;
+
+            if (b == null) return a;
+            b = b.next;
         }
 
-        return current;
+
+        ListNode reverseHead = reverse(a, b);
+
+        a.next = reverseKGroup(b, k);
+        return reverseHead;
+
     }
+
 }

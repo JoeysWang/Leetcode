@@ -1,3 +1,5 @@
+import data.ListNode;
+
 public class Main148排序链表 {
 
     /**

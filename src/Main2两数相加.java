@@ -1,3 +1,5 @@
+import data.ListNode;
+
 public class Main2两数相加 {
 
 

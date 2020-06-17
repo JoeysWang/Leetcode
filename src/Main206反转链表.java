@@ -1,4 +1,4 @@
-import java.util.List;
+import data.ListNode;
 
 public class Main206反转链表 {
 

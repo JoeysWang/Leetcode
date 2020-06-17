@@ -1,3 +1,5 @@
+import data.TreeNode;
+
 public class Main98验证二叉搜索树 {
 
     public boolean isValidBST(TreeNode root) {

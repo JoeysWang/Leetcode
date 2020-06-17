@@ -1,3 +1,5 @@
+import data.ListNode;
+
 public class Main21合并两个有序链表 {
 
     public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
