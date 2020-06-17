@@ -13,29 +13,45 @@ public class Main5最长回文子串 {
 //
 //    输入: "cbbd"
 //    输出: "bb"
-    String res = "";
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        String res = solution.longestPalindrome("babad");
 
-    public String longestPalindrome(String s) {
-
-        for (int i = 0; i < s.length(); i++) {
-            helper(s, i, i);//奇数情况下
-            helper(s, i, i + 1);//偶数情况下
-        }
-
-        return res;
+        System.out.println(res);
     }
 
-    private void helper(String s, int left, int right) {
+    static class Solution {
 
-        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-            left--;
-            right++;
+        public String longestPalindrome(String s) {
+            String res = "";
+
+            for (int i = 0; i < s.length(); i++) {
+                // 以 s[i] 为中心的最长回文子串
+                String s1 = helper(s, i, i);
+                // 以 s[i] 和 s[i+1] 为中心的最长回文子串
+                String s2 = helper(s, i, i + 1);
+
+                if (s1.length() >= s2.length())
+                    if (s1.length() > res.length()) res = s1;
+
+                if (s2.length() > s1.length())
+                    if (s2.length() > res.length()) res = s2;
+
+
+            }
+
+            return res;
         }
-        String current = s.substring(left + 1, right);
 
-        if (current.length() > res.length())
-            res = current;
+        private String helper(String s, int left, int right) {
 
+            while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+            }
+            String res = s.substring(left + 1, right);
+            return res;
+        }
     }
 
 

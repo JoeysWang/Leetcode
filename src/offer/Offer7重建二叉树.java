@@ -52,20 +52,21 @@ public class Offer7重建二叉树 {
             return recurise(0, 0, inorder.length - 1);
         }
 
-        public TreeNode recurise(int pre_root_index, int mid_left_index, int mid_right_index) {
 
-            if (mid_left_index > mid_right_index) {
+        public TreeNode recurise(int pre_root_index, int in_left_index, int in_right_index) {
+
+            if (in_left_index > in_right_index) {
                 return null;
             }
 
             TreeNode root = new TreeNode(preorder[pre_root_index]);
 
 
-            int midOrderRootIndex = midOrderIndexMap.get(preorder[0]);
+            int inOrderRootIndex = midOrderIndexMap.get(preorder[0]);
             root.left = recurise(
                     pre_root_index + 1,
-                    mid_left_index, //中序遍历的 左边界
-                    midOrderRootIndex - 1 ////中序遍历的 右边界
+                    in_left_index, //中序遍历的 左边界
+                    inOrderRootIndex - 1 ////中序遍历的 右边界
             );
 
             /**
@@ -78,12 +79,12 @@ public class Offer7重建二叉树 {
             //左子树长度 要用中序遍历 来算：
             // 长度 = 中序遍历当前根节点 - 左边界
 
-            int leftTreeLength = midOrderRootIndex - mid_left_index;
+            int leftTreeLength = inOrderRootIndex - in_left_index;
 
             root.right = recurise(
-                    pre_root_index + midOrderRootIndex + 1,
+                    pre_root_index + inOrderRootIndex + 1,
                     pre_root_index + leftTreeLength + 1,
-                    mid_right_index
+                    in_right_index
             );
 
             return root;

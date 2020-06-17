@@ -43,4 +43,22 @@ public class Main25K个一组翻转链表 {
 
     }
 
+    public ListNode reverseKGroup2(ListNode head, int k) {
+        if (head == null) return null;
+
+        ListNode start = head;
+        ListNode end = head;
+
+
+        for (int i = 0; i < k; i++) {
+            if (end == null) return head;
+            end = end.next;
+        }
+
+        start.next = reverseKGroup2(end,k);
+        ListNode newHead = reverse(start, end);
+
+        return newHead;
+    }
+
 }
