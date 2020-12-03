@@ -38,6 +38,8 @@ package 腾讯;
 //        0 < indexes[i] < S.length <= 1000
 //        给定输入中的所有字符都是小写字母。import java.util.Arrays;
 
+import java.util.Arrays;
+
 public class Main833字符串中的查找与替换 {
 
 
