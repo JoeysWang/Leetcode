@@ -1,10 +1,12 @@
-package sort;import java.util.Arrays;
+package sort;
+
+import java.util.Arrays;
 
 public class QuickSort {
 
     public static void main(String[] args) {
 
-        quickSort(new int[]{3, 8, 4, 2, 6, 1, 7}, 7);
+        quickSort(new int[]{5, 8, 3, 4, 6, 1, 7}, 7);
     }
 
     // 快速排序，a是数组，n表示数组的大小
@@ -12,13 +14,14 @@ public class QuickSort {
         System.out.println(Arrays.toString(a) + " -- begin ");
 
         quickSortInternally(a, 0, n);
+        System.out.println(Arrays.toString(a) + " -- end ");
     }
 
     // 快速排序递归函数，begin,r为下标
     private static void quickSortInternally(int[] a, int begin, int end) {
         if (begin >= end) return;
         int pivot = partition(a, begin, end); // 获取分区点
-        System.out.println(Arrays.toString(a) + " -- begin=" + begin + " end=" + end + " pivot=" + pivot);
+        System.out.println(Arrays.toString(a) + " -- begin=" + begin + " end=" + end + " pivot=" + a[pivot]);
 
         quickSortInternally(a, begin, pivot);
         quickSortInternally(a, pivot + 1, end);
@@ -37,7 +40,7 @@ public class QuickSort {
         //枢轴(也可以是在begin和end之间的随机数)
         int pivot = begin;
         //缓存一开始的pivot，最后在循环结束后交换到指定的pivot位置
-        int originPivot= pivot;
+        int originPivot = pivot;
 
 
         for (int i = begin + 1; i < end; i++) {
@@ -56,9 +59,9 @@ public class QuickSort {
     }
 
 
-
-
     private static void swap(int[] nums, int index1, int index2) {
+        System.out.println("\t" + Arrays.toString(nums) + " -- 交换=" + nums[index1] + " " + nums[index2]);
+
         int temp = nums[index1];
         nums[index1] = nums[index2];
         nums[index2] = temp;

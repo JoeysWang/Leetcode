@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 
 public class Main16最接近三数之和 {
@@ -8,6 +10,17 @@ public class Main16最接近三数之和 {
 //
 //    与 target 最接近的三个数的和为 2. (-1 + 2 + 1 = 2).
 
+    class Solution {
+
+//        public int threeSumClosest(int[] nums, int target) {
+//            //先排序,再用双指针遍历
+//            Arrays.sort(nums);
+//            int left = 0, right = 0;
+//            int ans = 0;
+//
+//
+//        }
+    }
 
     public int threeSumClosest(int[] nums, int target) {
 

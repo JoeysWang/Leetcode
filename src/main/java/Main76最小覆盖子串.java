@@ -1,3 +1,4 @@
+import java.security.cert.PolicyQualifierInfo;
 import java.util.HashMap;
 
 public class Main76最小覆盖子串 {
@@ -20,6 +21,65 @@ public class Main76最小覆盖子串 {
         String T = "ABC";
 
         System.out.println(minWindow(S, T));
+    }
+
+    class Solution {
+
+        public String minWindow(String s, String t) {
+            String res = "";
+            HashMap<Character, Integer> window = new HashMap<>();
+
+            //初始化需要的个数
+            HashMap<Character, Integer> needs = new HashMap<>();
+            for (int i = 0; i < t.length(); i++) {
+                char charNow = t.charAt(i);
+                needs.put(charNow, needs.getOrDefault(charNow, 0) + 1);
+            }
+
+            //开始滑动窗口
+            int left = 0, right = 0;
+            int match = 0;
+
+            int resStart = 0;
+            int resLength = Integer.MAX_VALUE;
+
+            while (right < s.length()) {
+                char charNow = s.charAt(right);
+                right++;
+
+                //开始判断窗口内是否合法
+                if (needs.containsKey(charNow)) {
+                    window.put(charNow, window.getOrDefault(charNow, 0) + 1);
+
+                    if (window.get(charNow).equals(needs.get(charNow))) {
+                        match++;
+                    }
+                }
+                while (match == needs.size()) {
+                    if (right - left < resLength) {
+                        resStart = left;
+                        resLength = right - left;
+                    }
+
+
+                    char charRemoved = s.charAt(left);
+                    left++;
+
+                    if (window.containsKey(charRemoved)) {
+                        if (window.get(charRemoved).equals(needs.get(charRemoved))) {
+                            match--;
+                        }
+                        window.put(charRemoved, window.get(charRemoved) - 1);
+
+                    }
+
+                }
+
+            }
+
+
+            return resLength == Integer.MAX_VALUE ? "" : res.substring(resStart, resStart + resLength);
+        }
     }
 
     public static String minWindow(String s, String t) {
@@ -83,7 +143,7 @@ public class Main76最小覆盖子串 {
 
         // 返回最小覆盖子串
         return len == Integer.MAX_VALUE ?
-                "" : s.substring(start, start+len);
+                "" : s.substring(start, start + len);
     }
 
 }
