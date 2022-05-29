@@ -4,52 +4,62 @@ public class Main00并查集 {
 
 
     public static class QuickUnionUF {
+        // 连通分量个数
+        private int count;
+        // 存储一棵树
+        private int[] parent; // 记录树的“重量”
+        private int[] size;
 
-        private int[] roots;
-
-        /**
-         * 初始化,
-         * 使得一开始的每个节点i的root都是自己：(它的老大是它自己)
-         * root[i] = i
-         */
-        public QuickUnionUF(int N) {
-            roots = new int[N];
-            for (int i = 0; i < N; i++) {
-                roots[i] = i;
+        public QuickUnionUF(int n) {
+            this.count = n;
+            parent = new int[n];
+            size = new int[n];
+            for (int i = 0; i < n; i++) {
+                parent[i] = i;
+                size[i] = 1;
             }
         }
 
-
-        /**
-         * 查找节点i的老大:
-         * 假设 3->2->1,
-         * 查找1的老大是2,2的老大是3，3的老大是3，所以1的老大是3，
-         * 找到后进行路径压缩，使得3后面的节点全部直接指向3，比如1不指向2了，而是直接指向3
-         * 3->2
-         *  \>1
-         */
-        public int findRoot(int i) {
-            int root = i;
-            while (root != roots[root]) {
-                root = roots[root];
+        public void union(int p, int q) {
+            int rootP = find(p);
+            int rootQ = find(q);
+            if (rootP == rootQ)
+                return;
+            // 小树接到大树下面，较平衡
+            if (size[rootP] > size[rootQ]) {
+                parent[rootQ] = rootP;
+                size[rootP] += size[rootQ];
+            } else {
+                parent[rootP] = rootQ;
+                size[rootQ] += size[rootP];
             }
-            //这里进行路径压缩,把3后面的节点，全部指向3，1不指向2了，而是直接指向3
-            while (roots[i] != i) {
-                int tmp = roots[i];
-                roots[i] = root;
-                i = tmp;
-            }
-            return root;
+            count--;
         }
 
-        /**
-         * 判断p q是否有相同root
-         */
-        public boolean connected(int p,int q){
-            return findRoot(p)==findRoot(q);
+        public boolean connected(int p, int q) {
+            int rootP = find(p);
+            int rootQ = find(q);
+            return rootP == rootQ;
         }
 
+        private int find(int x) {
+            while (parent[x] != x) {
+                //进行路径压缩
+                //取出他的父节点
+                int parents = parent[x];
+                //取出爷爷节点
+                int grandpa = parent[parents];
+                //让他指向爷爷节点
+                parent[x] = grandpa;
 
+                x = parent[x];
+            }
+            return x;
+        }
+
+        public int count() {
+            return count;
+        }
     }
 
 

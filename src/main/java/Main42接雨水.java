@@ -1,31 +1,49 @@
 
 
-public class Main29两数相除 {
-
+public class Main42接雨水 {
+    /**
+     * 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+     */
     public static void main(String[] args) {
-        System.out.println(divide(-2147483648, -1));
+
     }
 
-    public static int divide(int dividend, int divisor) {
+    public static class Solution {
 
-        // 6/2=3
+        /**
+         * 使用双指针算法，单独计算当前柱子，(当前位置的左右最高的墙)取矮的-当前柱子高度
+         * 用备忘录记住左右最低的墙
+         */
+        public int trap(int[] height) {
 
-        boolean sign = (dividend > 0) ^ (divisor > 0);
+            int length = height.length;
+            if (length <= 0) {
+                return 0;
+            }
+            int l_max = height[0];
+            int r_max = height[length - 1];
 
-        int newDividend = dividend > 0 ? -dividend : dividend;
-        int newDivisor = divisor > 0 ? -divisor : divisor;
+            int res = 0;
 
+            int left = 0;
+            int right = length - 1;
 
-        int result = 0;
-        int current = 0;
-        while (current > newDividend) {
-            result += 1;
-            current -= newDivisor;
+            while (left <= right) {
+                l_max = Math.max(l_max, height[left]);
+
+                r_max = Math.max(r_max, height[right]);
+
+                if (l_max < r_max) {
+                    res += l_max - height[left];
+                    left++;
+                } else {
+                    res += r_max - height[right];
+                    right--;
+                }
+
+            }
+            return res;
         }
-        if (current < newDividend)
-            result -= 1;
-
-        return sign ? result :- result;
     }
 
 
