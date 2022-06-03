@@ -11,33 +11,33 @@ public class Main19删除链表的倒数第N个节点 {
 
     }
 
-
     /**
      * 一次遍历法，用双指针， 一个fast，一个slow
-     * fast先走n+1，然后再和slow一起走到fast为null，
-     * 这时候slow指的位置就是倒数第n个节点的前一个！
+     * fast先走n，然后再和slow一起走到fast.next为null，
+     * 这时候slow指的位置就是倒数第n个节点！
      * 然后slow的下一个指向下下个，就跳过了第N节点
+     * 
      */
     class Solution {
 
         public ListNode removeNthFromEnd(ListNode head, int n) {
-            ListNode dummy = new ListNode(0);
+            ListNode dummy = new ListNode();
+            // null- 1->2->3->4->5->null
+
             dummy.next = head;
-
-
-            ListNode fast = dummy;
             ListNode slow = dummy;
+            ListNode fast = dummy;
 
-            for (int i = 0; i < n + 1; i++) {
+            for (int i = 0; i < n; i++) {
                 fast = fast.next;
             }
-
-            while (fast != null) {
+            while (fast.next != null) {
                 fast = fast.next;
                 slow = slow.next;
             }
             slow.next = slow.next.next;
 
+            // 注意不要返回head，因为head也有可能被remove掉,比如n=5
             return dummy.next;
         }
 
