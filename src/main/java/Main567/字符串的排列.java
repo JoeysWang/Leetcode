@@ -33,6 +33,28 @@ public class 字符串的排列 {
         boolean result = checkInclusion(s1, s2);
         System.out.println(result);
 
+        test();
+    }
+
+    public static void test() {
+        TestUtil.reset();
+
+        // 测试用例1: 示例用例 - 包含排列
+        TestUtil.assertTrue(checkInclusion("ab", "eidbaooo"), "示例: s2包含s1排列(ba)");
+
+        // 测试用例2: 示例用例 - 不包含排列
+        TestUtil.assertFalse(checkInclusion("ab", "eidboaoo"), "示例: s2不包含s1排列");
+
+        // 测试用例3: 边界用例 - 两字符串相同
+        TestUtil.assertTrue(checkInclusion("abc", "abc"), "边界: 两字符串相同");
+
+        // 测试用例4: 边界用例 - s1比s2长
+        TestUtil.assertFalse(checkInclusion("abcd", "ab"), "边界: s1比s2长");
+
+        // 测试用例5: 普通用例
+        TestUtil.assertTrue(checkInclusion("abc", "ccccabaa"), "普通: 排列在末尾");
+
+        TestUtil.printSummary();
     }
 
     public static boolean checkInclusion(String s1, String s2) {

@@ -10,6 +10,44 @@ public class Main88合并连个有序数组 {
         solution.merge(a, 0, b, 1);
 
         System.out.println(Arrays.toString(a));
+        test();
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例
+        int[] nums1_1 = {1, 2, 3, 0, 0, 0};
+        int[] nums2_1 = {2, 5, 6};
+        solution.merge(nums1_1, 3, nums2_1, 3);
+        TestUtil.assertArrayEquals(new int[]{1, 2, 2, 3, 5, 6}, nums1_1, "示例用例: [1,2,3]+[2,5,6]");
+
+        // 测试用例2: nums1为空（m=0）
+        int[] nums1_2 = {0};
+        int[] nums2_2 = {1};
+        solution.merge(nums1_2, 0, nums2_2, 1);
+        TestUtil.assertArrayEquals(new int[]{1}, nums1_2, "边界用例: nums1为空");
+
+        // 测试用例3: nums2为空（n=0）
+        int[] nums1_3 = {1};
+        int[] nums2_3 = {};
+        solution.merge(nums1_3, 1, nums2_3, 0);
+        TestUtil.assertArrayEquals(new int[]{1}, nums1_3, "边界用例: nums2为空");
+
+        // 测试用例4: 两个数组完全交错
+        int[] nums1_4 = {1, 3, 5, 0, 0, 0};
+        int[] nums2_4 = {2, 4, 6};
+        solution.merge(nums1_4, 3, nums2_4, 3);
+        TestUtil.assertArrayEquals(new int[]{1, 2, 3, 4, 5, 6}, nums1_4, "普通用例: 交错合并");
+
+        // 测试用例5: nums2所有元素都小于nums1
+        int[] nums1_5 = {4, 5, 6, 0, 0, 0};
+        int[] nums2_5 = {1, 2, 3};
+        solution.merge(nums1_5, 3, nums2_5, 3);
+        TestUtil.assertArrayEquals(new int[]{1, 2, 3, 4, 5, 6}, nums1_5, "普通用例: nums2全部更小");
+
+        TestUtil.printSummary();
     }
 
     static class Solution {

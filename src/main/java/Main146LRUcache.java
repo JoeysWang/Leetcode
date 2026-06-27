@@ -13,7 +13,47 @@ public class Main146LRUcache {
         lruCache2.put(4, 4);
         lruCache2.put(5, 5);
         lruCache2.put(6, 6);
+        test();
+    }
 
+    public static void test() {
+        TestUtil.reset();
+
+        // 测试用例1: 基本put/get操作
+        LRUCache2 cache1 = new LRUCache2(2);
+        cache1.put(1, 1);
+        cache1.put(2, 2);
+        TestUtil.assertEquals(1, cache1.get(1), "示例用例: put(1,1)+put(2,2),get(1)=1");
+
+        // 测试用例2: 容量淘汰 - 加入第三个元素应淘汰key=2
+        cache1.put(3, 3);
+        TestUtil.assertEquals(-1, cache1.get(2), "示例用例: put(3,3)后get(2)应返回-1(被淘汰)");
+
+        // 测试用例3: get后LRU顺序改变
+        TestUtil.assertEquals(3, cache1.get(3), "示例用例: get(3)=3");
+        cache1.put(4, 4);
+        TestUtil.assertEquals(-1, cache1.get(1), "示例用例: put(4,4)后get(1)应返回-1(被淘汰)");
+        TestUtil.assertEquals(3, cache1.get(3), "示例用例: get(3)=3(未淘汰)");
+        TestUtil.assertEquals(4, cache1.get(4), "示例用例: get(4)=4");
+
+        // 测试用例4: 边界用例 - 获取不存在的key
+        LRUCache2 cache2 = new LRUCache2(1);
+        TestUtil.assertEquals(-1, cache2.get(99), "边界用例: 获取不存在的key返回-1");
+
+        // 测试用例5: 更新已有key的值
+        LRUCache2 cache3 = new LRUCache2(2);
+        cache3.put(1, 1);
+        cache3.put(1, 10);
+        TestUtil.assertEquals(10, cache3.get(1), "普通用例: 更新已有key的值");
+
+        // 测试用例6: 容量为1的缓存
+        LRUCache2 cache4 = new LRUCache2(1);
+        cache4.put(1, 1);
+        cache4.put(2, 2);
+        TestUtil.assertEquals(-1, cache4.get(1), "普通用例: 容量1时put(2,2)淘汰key=1");
+        TestUtil.assertEquals(2, cache4.get(2), "普通用例: 容量1时get(2)=2");
+
+        TestUtil.printSummary();
     }
 
     /**

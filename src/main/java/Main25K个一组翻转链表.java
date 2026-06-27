@@ -3,8 +3,55 @@ import data.ListNode;
 public class Main25K个一组翻转链表 {
 
     public static void main(String[] args) {
+        test();
+    }
 
+    public static void test() {
+        TestUtil.reset();
+        Main25K个一组翻转链表 outer = new Main25K个一组翻转链表();
+        Solution solution = outer.new Solution();
 
+        // 测试用例1: k=2 [1,2,3,4,5] → [2,1,4,3,5]
+        ListNode head1 = buildList(new int[]{1, 2, 3, 4, 5});
+        ListNode result1 = solution.reverseKGroup(head1, 2);
+        TestUtil.assertArrayEquals(new int[]{2, 1, 4, 3, 5}, listToArray(result1), "示例: k=2 [1,2,3,4,5]");
+
+        // 测试用例2: k=3 [1,2,3,4,5] → [3,2,1,4,5]
+        ListNode head2 = buildList(new int[]{1, 2, 3, 4, 5});
+        ListNode result2 = solution.reverseKGroup(head2, 3);
+        TestUtil.assertArrayEquals(new int[]{3, 2, 1, 4, 5}, listToArray(result2), "k=3 [1,2,3,4,5]");
+
+        // 测试用例3: k=1 不变
+        ListNode head3 = buildList(new int[]{1, 2, 3});
+        ListNode result3 = solution.reverseKGroup(head3, 1);
+        TestUtil.assertArrayEquals(new int[]{1, 2, 3}, listToArray(result3), "k=1 不变");
+
+        // 测试用例4: k等于链表长度
+        ListNode head4 = buildList(new int[]{1, 2, 3});
+        ListNode result4 = solution.reverseKGroup(head4, 3);
+        TestUtil.assertArrayEquals(new int[]{3, 2, 1}, listToArray(result4), "k等于长度: [1,2,3]");
+
+        TestUtil.printSummary();
+    }
+
+    private static ListNode buildList(int[] arr) {
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+        for (int v : arr) {
+            current.next = new ListNode(v);
+            current = current.next;
+        }
+        return dummy.next;
+    }
+
+    private static int[] listToArray(ListNode head) {
+        int count = 0;
+        ListNode curr = head;
+        while (curr != null) { count++; curr = curr.next; }
+        int[] arr = new int[count];
+        curr = head;
+        for (int i = 0; i < count; i++) { arr[i] = curr.val; curr = curr.next; }
+        return arr;
     }
 
 

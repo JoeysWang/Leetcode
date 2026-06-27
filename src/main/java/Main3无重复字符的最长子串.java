@@ -48,5 +48,30 @@ public class Main3无重复字符的最长子串 {
         return ans;
     }
 
+    public static void main(String[] args) {
+        test();
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Main3无重复字符的最长子串 obj = new Main3无重复字符的最长子串();
+
+        // 测试用例1: 示例用例 - "abcabcbb" → 3
+        TestUtil.assertEquals(3, obj.lengthOfLongestSubstring("abcabcbb"), "示例用例: abcabcbb");
+
+        // 测试用例2: 示例用例 - "bbbbb" → 1
+        TestUtil.assertEquals(1, obj.lengthOfLongestSubstring("bbbbb"), "示例用例: bbbbb");
+
+        // 测试用例3: 示例用例 - "pwwkew" → 3
+        TestUtil.assertEquals(3, obj.lengthOfLongestSubstring("pwwkew"), "示例用例: pwwkew");
+
+        // 测试用例4: 边界用例 - 空字符串 → 0
+        TestUtil.assertEquals(0, obj.lengthOfLongestSubstring(""), "边界用例: 空字符串");
+
+        // 测试用例5: 边界用例 - 单字符 → 1
+        TestUtil.assertEquals(1, obj.lengthOfLongestSubstring("a"), "边界用例: 单字符");
+
+        TestUtil.printSummary();
+    }
 
 }

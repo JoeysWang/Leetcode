@@ -39,21 +39,63 @@ public class Main6Z字形变换 {
 
 
     public String convert(String s, int numRows) {
+        // 边界情况：只有一行时不需要变换
+        if (numRows == 1) return s;
+
+        // 初始化 StringBuilder 数组
         StringBuilder[] sbs = new StringBuilder[numRows];
-
-        for (int i = 0; i < s.length(); i++) {
-
-            int eachCount = 2 * numRows - 2;
-
-            int index = i % eachCount;
-            if (index>=numRows){
-                index=numRows-index;
-            }
-
-
+        for (int i = 0; i < numRows; i++) {
+            sbs[i] = new StringBuilder();
         }
 
+        // 每个周期的长度
+        int cycleLen = 2 * numRows - 2;
 
-        return sbs.toString();
+        // 遍历字符串，将每个字符放到对应的行
+        for (int i = 0; i < s.length(); i++) {
+            int index = i % cycleLen;
+            // 如果在前 numRows 个位置，直接放到对应行
+            // 如果在后半个周期，需要计算对称位置
+            if (index < numRows) {
+                sbs[index].append(s.charAt(i));
+            } else {
+                sbs[cycleLen - index].append(s.charAt(i));
+            }
+        }
+
+        // 拼接所有行
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < numRows; i++) {
+            result.append(sbs[i]);
+        }
+
+        return result.toString();
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Main6Z字形变换 solution = new Main6Z字形变换();
+
+        // 测试用例1: 示例用例1
+        String result1 = solution.convert("LEETCODEISHIRING", 3);
+        TestUtil.assertEquals("LCIRETOESIIGEDHN", result1, "示例用例1: Z字形变换 numRows=3");
+
+        // 测试用例2: 示例用例2
+        String result2 = solution.convert("LEETCODEISHIRING", 4);
+        TestUtil.assertEquals("LDREOEIIECIHNTSG", result2, "示例用例2: Z字形变换 numRows=4");
+
+        // 测试用例3: 边界用例 - numRows=1
+        String result3 = solution.convert("AB", 1);
+        TestUtil.assertEquals("AB", result3, "边界用例: numRows=1");
+
+        // 测试用例4: 普通用例
+        String result4 = solution.convert("PAYPALISHIRING", 3);
+        TestUtil.assertEquals("PAHNAPLSIIGYIR", result4, "普通用例: PAYPALISHIRING numRows=3");
+
+        TestUtil.printSummary();
+    }
+
+    public static void main(String[] args) {
+        test();
     }
 }

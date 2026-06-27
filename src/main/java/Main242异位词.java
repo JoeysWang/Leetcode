@@ -8,6 +8,7 @@ public class Main242异位词 {
 
       boolean result=  isAnagram("caar","rac");
       System.out.println(result);
+      test();
     }
     public static boolean isAnagram(String s, String t) {
 
@@ -42,5 +43,28 @@ public class Main242异位词 {
         }
     }
 
+    public static void test() {
+        TestUtil.reset();
+
+        // 测试用例1: 示例用例 - 是异位词
+        TestUtil.assertTrue(isAnagram("anagram", "nagaram"), "示例用例 \"anagram\" 与 \"nagaram\"");
+
+        // 测试用例2: 示例用例 - 不是异位词
+        TestUtil.assertFalse(isAnagram("rat", "car"), "示例用例 \"rat\" 与 \"car\"");
+
+        // 测试用例3: 边界用例 - 空字符串
+        TestUtil.assertTrue(isAnagram("", ""), "边界用例 两个空字符串");
+
+        // 测试用例4: 长度不同
+        TestUtil.assertFalse(isAnagram("ab", "a"), "边界用例 长度不同 \"ab\" 与 \"a\"");
+
+        // 测试用例5: 字符相同但频次不同
+        TestUtil.assertFalse(isAnagram("aab", "abb"), "普通用例 \"aab\" 与 \"abb\" 频次不同");
+
+        // 测试用例6: 单个字符
+        TestUtil.assertTrue(isAnagram("a", "a"), "边界用例 单个字符 \"a\" 与 \"a\"");
+
+        TestUtil.printSummary();
+    }
 
 }

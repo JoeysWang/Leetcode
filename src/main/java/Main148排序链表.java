@@ -16,7 +16,77 @@ public class Main148排序链表 {
      */
 
     public static void main(String[] args) {
+        test();
+    }
 
+    /**
+     * 辅助方法：根据数组构建链表
+     */
+    private static ListNode buildList(int[] values) {
+        if (values == null || values.length == 0) return null;
+        ListNode head = new ListNode(values[0]);
+        ListNode current = head;
+        for (int i = 1; i < values.length; i++) {
+            current.next = new ListNode(values[i]);
+            current = current.next;
+        }
+        return head;
+    }
+
+    /**
+     * 辅助方法：将链表转为数组
+     */
+    private static int[] listToArray(ListNode head) {
+        int count = 0;
+        ListNode current = head;
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+        int[] result = new int[count];
+        current = head;
+        for (int i = 0; i < count; i++) {
+            result[i] = current.val;
+            current = current.next;
+        }
+        return result;
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 - 4->2->1->3
+        ListNode list1 = buildList(new int[]{4, 2, 1, 3});
+        ListNode sorted1 = solution.sortList(list1);
+        TestUtil.assertArrayEquals(new int[]{1, 2, 3, 4}, listToArray(sorted1), "示例用例: [4,2,1,3]排序");
+
+        // 测试用例2: 示例用例 - -1->5->3->4->0
+        ListNode list2 = buildList(new int[]{-1, 5, 3, 4, 0});
+        ListNode sorted2 = solution.sortList(list2);
+        TestUtil.assertArrayEquals(new int[]{-1, 0, 3, 4, 5}, listToArray(sorted2), "示例用例: [-1,5,3,4,0]排序");
+
+        // 测试用例3: 边界用例 - 单节点
+        ListNode list3 = buildList(new int[]{1});
+        ListNode sorted3 = solution.sortList(list3);
+        TestUtil.assertArrayEquals(new int[]{1}, listToArray(sorted3), "边界用例: 单节点");
+
+        // 测试用例4: 边界用例 - 两个节点
+        ListNode list4 = buildList(new int[]{2, 1});
+        ListNode sorted4 = solution.sortList(list4);
+        TestUtil.assertArrayEquals(new int[]{1, 2}, listToArray(sorted4), "边界用例: 两个节点");
+
+        // 测试用例5: 已经有序
+        ListNode list5 = buildList(new int[]{1, 2, 3, 4, 5});
+        ListNode sorted5 = solution.sortList(list5);
+        TestUtil.assertArrayEquals(new int[]{1, 2, 3, 4, 5}, listToArray(sorted5), "普通用例: 已有序链表");
+
+        // 测试用例6: 逆序
+        ListNode list6 = buildList(new int[]{5, 4, 3, 2, 1});
+        ListNode sorted6 = solution.sortList(list6);
+        TestUtil.assertArrayEquals(new int[]{1, 2, 3, 4, 5}, listToArray(sorted6), "普通用例: 逆序链表");
+
+        TestUtil.printSummary();
     }
 
     /**

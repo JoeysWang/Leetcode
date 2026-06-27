@@ -28,6 +28,30 @@ public class Main70爬楼梯 {
     public static void main(String[] args) {
         Solution solution = new Solution();
         System.out.println("climbStairs: " + solution.climbStairs(141));
+
+        test();
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例
+        TestUtil.assertEquals(2, solution.climbStairs(2), "示例: n=2");
+
+        // 测试用例2: 示例用例
+        TestUtil.assertEquals(3, solution.climbStairs(3), "示例: n=3");
+
+        // 测试用例3: 边界用例
+        TestUtil.assertEquals(1, solution.climbStairs(1), "边界: n=1");
+
+        // 测试用例4: 普通用例
+        TestUtil.assertEquals(8, solution.climbStairs(5), "普通: n=5");
+
+        // 测试用例5: 普通用例
+        TestUtil.assertEquals(13, solution.climbStairs(6), "普通: n=6");
+
+        TestUtil.printSummary();
     }
 
     static class Solution {

@@ -21,6 +21,44 @@ public class Main283移动零 {
         solution.moveZeroes(nums);
 
         System.out.println(Arrays.toString(nums));
+        test();
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 [0,1,0,3,12] -> [1,3,12,0,0]
+        int[] nums1 = {0, 1, 0, 3, 12};
+        solution.moveZeroes(nums1);
+        TestUtil.assertArrayEquals(new int[]{1, 3, 12, 0, 0}, nums1, "示例用例: [0,1,0,3,12]");
+
+        // 测试用例2: 示例用例 [0] -> [0]
+        int[] nums2 = {0};
+        solution.moveZeroes(nums2);
+        TestUtil.assertArrayEquals(new int[]{0}, nums2, "示例用例: [0]");
+
+        // 测试用例3: 边界用例 - 全零
+        int[] nums3 = {0, 0, 0};
+        solution.moveZeroes(nums3);
+        TestUtil.assertArrayEquals(new int[]{0, 0, 0}, nums3, "边界用例: 全零数组");
+
+        // 测试用例4: 边界用例 - 无零
+        int[] nums4 = {1, 2, 3};
+        solution.moveZeroes(nums4);
+        TestUtil.assertArrayEquals(new int[]{1, 2, 3}, nums4, "边界用例: 无零数组");
+
+        // 测试用例5: 普通用例 - 末尾有零
+        int[] nums5 = {1, 0, 2, 0, 3, 0};
+        solution.moveZeroes(nums5);
+        TestUtil.assertArrayEquals(new int[]{1, 2, 3, 0, 0, 0}, nums5, "普通用例: [1,0,2,0,3,0]");
+
+        // 测试用例6: 边界用例 - 单元素非零
+        int[] nums6 = {5};
+        solution.moveZeroes(nums6);
+        TestUtil.assertArrayEquals(new int[]{5}, nums6, "边界用例: 单元素非零");
+
+        TestUtil.printSummary();
     }
 
     static class Solution {

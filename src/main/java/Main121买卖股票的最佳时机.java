@@ -11,6 +11,32 @@ public class Main121买卖股票的最佳时机 {
 
         Solution solution = new Solution();
         System.out.println("max: " + solution.maxProfit(a));
+        test();
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 - [7,1,5,3,6,4]
+        TestUtil.assertEquals(5, solution.maxProfit(new int[]{7, 1, 5, 3, 6, 4}), "示例用例: [7,1,5,3,6,4]");
+
+        // 测试用例2: 示例用例 - 一直下跌
+        TestUtil.assertEquals(0, solution.maxProfit(new int[]{7, 6, 4, 3, 1}), "示例用例: 一直下跌返回0");
+
+        // 测试用例3: 边界用例 - 只有一个元素
+        TestUtil.assertEquals(0, solution.maxProfit(new int[]{1}), "边界用例: 单个元素");
+
+        // 测试用例4: 边界用例 - 两个元素上涨
+        TestUtil.assertEquals(1, solution.maxProfit(new int[]{1, 2}), "边界用例: 两个元素上涨");
+
+        // 测试用例5: 边界用例 - 两个元素下跌
+        TestUtil.assertEquals(0, solution.maxProfit(new int[]{2, 1}), "边界用例: 两个元素下跌");
+
+        // 测试用例6: 普通用例 - 最大利润在中间
+        TestUtil.assertEquals(4, solution.maxProfit(new int[]{1, 2, 3, 4, 5}), "普通用例: 递增序列");
+
+        TestUtil.printSummary();
     }
 
     static class Solution {

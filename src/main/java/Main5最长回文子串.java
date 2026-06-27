@@ -18,6 +18,17 @@ public class Main5最长回文子串 {
         String res = solution.longestPalindrome("babad");
 
         System.out.println(res);
+        test();
+    }
+
+    private static boolean isPalindromeStr(String s) {
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            if (s.charAt(l) != s.charAt(r)) return false;
+            l++;
+            r--;
+        }
+        return true;
     }
 
     static class Solution {
@@ -54,5 +65,24 @@ public class Main5最长回文子串 {
         }
     }
 
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 - "babad" → "bab" 或 "aba"
+        String result1 = solution.longestPalindrome("babad");
+        TestUtil.assertTrue(isPalindromeStr(result1) && result1.length() == 3, "示例用例: babad");
+
+        // 测试用例2: 示例用例 - "cbbd" → "bb"
+        TestUtil.assertEquals("bb", solution.longestPalindrome("cbbd"), "示例用例: cbbd");
+
+        // 测试用例3: 边界用例 - 单字符 "a" → "a"
+        TestUtil.assertEquals("a", solution.longestPalindrome("a"), "边界用例: 单字符");
+
+        // 测试用例4: 全相同字符 - "aaaa" → "aaaa"
+        TestUtil.assertEquals("aaaa", solution.longestPalindrome("aaaa"), "普通用例: aaaa");
+
+        TestUtil.printSummary();
+    }
 
 }

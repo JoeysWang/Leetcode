@@ -24,6 +24,40 @@ public class Main72编辑距离 {
     public static void main(String[] args) {
         int min = minDistance1("ac", "a");
         System.out.println("min " + min);
+        test();
+    }
+
+    public static void test() {
+        TestUtil.reset();
+
+        // 测试用例1: 示例用例 - horse -> ros
+        TestUtil.assertEquals(3, minDistance1("horse", "ros"), "示例用例: horse->ros");
+
+        // 测试用例2: 示例用例 - intention -> execution
+        TestUtil.assertEquals(5, minDistance1("intention", "execution"), "示例用例: intention->execution");
+
+        // 测试用例3: 边界用例 - 一个为空字符串
+        TestUtil.assertEquals(5, minDistance1("", "hello"), "边界用例: word1为空");
+
+        // 测试用例4: 边界用例 - 另一个为空字符串
+        TestUtil.assertEquals(5, minDistance1("hello", ""), "边界用例: word2为空");
+
+        // 测试用例5: 边界用例 - 两个都为空
+        TestUtil.assertEquals(0, minDistance1("", ""), "边界用例: 两个都为空");
+
+        // 测试用例6: 两个相同字符串
+        TestUtil.assertEquals(0, minDistance1("abc", "abc"), "相同字符串");
+
+        // 测试用例7: 单字符
+        TestUtil.assertEquals(1, minDistance1("a", "b"), "单字符不同");
+
+        // 测试用例8: 单字符相同
+        TestUtil.assertEquals(0, minDistance1("a", "a"), "单字符相同");
+
+        // 测试用例9: 原代码中的测试
+        TestUtil.assertEquals(1, minDistance1("ac", "a"), "原代码测试: ac->a");
+
+        TestUtil.printSummary();
     }
 
     /**

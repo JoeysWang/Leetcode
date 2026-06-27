@@ -19,7 +19,7 @@ public class Main14最长公共前缀 {
         Solution solution = new Solution();
         String res = solution.longestCommonPrefix2(new String[]{"flower", "flowe", "flower"});
         System.out.println("res: " + res);
-
+        test();
     }
 
     public static class Solution {
@@ -101,5 +101,30 @@ public class Main14最长公共前缀 {
 
 
         }
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 - ["flower","flow","flight"] → "fl" (二分法)
+        TestUtil.assertEquals("fl", solution.longestCommonPrefix2(new String[]{"flower", "flow", "flight"}), "示例用例: 二分法找公共前缀");
+
+        // 测试用例2: 无公共前缀 - ["dog","racecar","car"] → ""
+        TestUtil.assertEquals("", solution.longestCommonPrefix2(new String[]{"dog", "racecar", "car"}), "无公共前缀: 二分法");
+
+        // 测试用例3: 边界用例 - 空数组 → ""
+        TestUtil.assertEquals("", solution.longestCommonPrefix2(new String[]{}), "边界用例: 空数组");
+
+        // 测试用例4: 单个元素 - ["alone"] → "alone"
+        TestUtil.assertEquals("alone", solution.longestCommonPrefix2(new String[]{"alone"}), "边界用例: 单个元素");
+
+        // 测试用例5: 暴力法 - ["flower","flow","flight"] → "fl"
+        TestUtil.assertEquals("fl", solution.longestCommonPrefix(new String[]{"flower", "flow", "flight"}), "示例用例: 暴力法找公共前缀");
+
+        // 测试用例6: 暴力法无公共前缀
+        TestUtil.assertEquals("", solution.longestCommonPrefix(new String[]{"dog", "racecar", "car"}), "无公共前缀: 暴力法");
+
+        TestUtil.printSummary();
     }
 }

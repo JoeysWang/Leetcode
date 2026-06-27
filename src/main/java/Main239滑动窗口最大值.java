@@ -31,6 +31,7 @@ public class Main239滑动窗口最大值 {
 
 
         System.out.println(Arrays.toString(ints));
+        test();
     }
 
     ArrayDeque<Integer> deq = new ArrayDeque<Integer>();
@@ -72,6 +73,42 @@ public class Main239滑动窗口最大值 {
             output[i - k + 1] = nums[deq.getFirst()];
         }
         return output;
+    }
+
+    public static void test() {
+        TestUtil.reset();
+
+        // 测试用例1: 示例用例 [1,3,-1,-3,5,3,6,7], k=3 → [3,3,5,5,6,7]
+        {
+            Main239滑动窗口最大值 solution = new Main239滑动窗口最大值();
+            TestUtil.assertArrayEquals(new int[]{3, 3, 5, 5, 6, 7}, solution.maxSlidingWindow(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3), "示例用例 [1,3,-1,-3,5,3,6,7] k=3");
+        }
+
+        // 测试用例2: 边界用例 k=1 → 返回原数组
+        {
+            Main239滑动窗口最大值 solution = new Main239滑动窗口最大值();
+            TestUtil.assertArrayEquals(new int[]{1, -1}, solution.maxSlidingWindow(new int[]{1, -1}, 1), "边界用例 k=1 [1,-1]");
+        }
+
+        // 测试用例3: 普通用例 [1,3,1,2,0,5], k=3 → [3,3,2,5]
+        {
+            Main239滑动窗口最大值 solution = new Main239滑动窗口最大值();
+            TestUtil.assertArrayEquals(new int[]{3, 3, 2, 5}, solution.maxSlidingWindow(new int[]{1, 3, 1, 2, 0, 5}, 3), "普通用例 [1,3,1,2,0,5] k=3");
+        }
+
+        // 测试用例4: 边界用例 单个元素
+        {
+            Main239滑动窗口最大值 solution = new Main239滑动窗口最大值();
+            TestUtil.assertArrayEquals(new int[]{5}, solution.maxSlidingWindow(new int[]{5}, 1), "边界用例 单个元素 [5] k=1");
+        }
+
+        // 测试用例5: k等于数组长度
+        {
+            Main239滑动窗口最大值 solution = new Main239滑动窗口最大值();
+            TestUtil.assertArrayEquals(new int[]{3}, solution.maxSlidingWindow(new int[]{1, 2, 3}, 3), "k等于数组长度 [1,2,3] k=3");
+        }
+
+        TestUtil.printSummary();
     }
 
 }

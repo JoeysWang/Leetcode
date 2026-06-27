@@ -7,7 +7,7 @@ public class Main7整数反转 {
 
 
         System.out.println(" result = " + solution.reverse(-124145));
-
+        test();
     }
 
     /**
@@ -41,5 +41,27 @@ public class Main7整数反转 {
 
             return now;
         }
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 - 123 → 321
+        TestUtil.assertEquals(321, solution.reverse(123), "示例用例: 123反转");
+
+        // 测试用例2: 示例用例 - -123 → -321
+        TestUtil.assertEquals(-321, solution.reverse(-123), "示例用例: -123反转");
+
+        // 测试用例3: 示例用例 - 120 → 21
+        TestUtil.assertEquals(21, solution.reverse(120), "示例用例: 120反转");
+
+        // 测试用例4: 边界用例 - 0 → 0
+        TestUtil.assertEquals(0, solution.reverse(0), "边界用例: 0反转");
+
+        // 测试用例5: 溢出用例 - 超出int范围返回0
+        TestUtil.assertEquals(0, solution.reverse(1534236469), "溢出用例: 超出int范围");
+
+        TestUtil.printSummary();
     }
 }

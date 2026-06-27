@@ -48,7 +48,7 @@ public class Main200岛屿数量 {
                 {'1', '1', '1', '1', '1', '1', '1'}};
         int numIslands4 = solution.numIslands(grid4);
         System.out.println(numIslands4);
-
+        test();
     }
 
     public int numIslands(char[][] grid) {
@@ -345,5 +345,52 @@ public class Main200岛屿数量 {
 
             }
         }
+    }
+
+    private static char[][] copyGrid(char[][] grid) {
+        char[][] copy = new char[grid.length][grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            System.arraycopy(grid[i], 0, copy[i], 0, grid[i].length);
+        }
+        return copy;
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Main200岛屿数量 solution = new Main200岛屿数量();
+
+        // 测试用例1: 示例用例 - 1个岛屿
+        char[][] grid1 = {
+                {'1', '1', '1', '1', '0'},
+                {'1', '1', '0', '1', '0'},
+                {'1', '1', '0', '0', '0'},
+                {'0', '0', '0', '0', '0'}};
+        TestUtil.assertEquals(1, solution.numIslands(copyGrid(grid1)), "示例用例 1个岛屿");
+
+        // 测试用例2: 示例用例 - 3个岛屿
+        char[][] grid2 = {
+                {'1', '1', '0', '0', '0'},
+                {'1', '1', '0', '0', '0'},
+                {'0', '0', '1', '0', '0'},
+                {'0', '0', '0', '1', '1'}};
+        TestUtil.assertEquals(3, solution.numIslands(copyGrid(grid2)), "示例用例 3个岛屿");
+
+        // 测试用例3: 边界用例 - 全是0
+        char[][] grid3 = {
+                {'0', '0'},
+                {'0', '0'}};
+        TestUtil.assertEquals(0, solution.numIslands(copyGrid(grid3)), "边界用例 全是0");
+
+        // 测试用例4: 边界用例 - 全是1
+        char[][] grid4 = {
+                {'1', '1'},
+                {'1', '1'}};
+        TestUtil.assertEquals(1, solution.numIslands(copyGrid(grid4)), "边界用例 全是1");
+
+        // 测试用例5: 单个元素
+        char[][] grid5 = {{'1'}};
+        TestUtil.assertEquals(1, solution.numIslands(copyGrid(grid5)), "边界用例 单个元素");
+
+        TestUtil.printSummary();
     }
 }

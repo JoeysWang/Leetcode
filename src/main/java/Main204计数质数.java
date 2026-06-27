@@ -9,6 +9,7 @@ public class Main204计数质数 {
     public static void main(String[] args) {
         Solution solution = new Solution();
         System.out.println(solution.countPrimes(10));
+        test();
     }
 
 
@@ -49,6 +50,32 @@ public class Main204计数质数 {
 
 
     }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 n=10 → 4 (质数: 2,3,5,7)
+        TestUtil.assertEquals(4, solution.countPrimes(10), "示例用例 n=10");
+
+        // 测试用例2: 边界用例 n=0 → 0
+        TestUtil.assertEquals(0, solution.countPrimes(0), "边界用例 n=0");
+
+        // 测试用例3: 边界用例 n=1 → 0
+        TestUtil.assertEquals(0, solution.countPrimes(1), "边界用例 n=1");
+
+        // 测试用例4: 边界用例 n=2 → 0 (小于2的质数没有)
+        TestUtil.assertEquals(0, solution.countPrimes(2), "边界用例 n=2");
+
+        // 测试用例5: n=3 → 1 (质数: 2)
+        TestUtil.assertEquals(1, solution.countPrimes(3), "普通用例 n=3");
+
+        // 测试用例6: n=20 → 8 (质数: 2,3,5,7,11,13,17,19)
+        TestUtil.assertEquals(8, solution.countPrimes(20), "普通用例 n=20");
+
+        TestUtil.printSummary();
+    }
+
     private static class Solution2 {
 
         /**

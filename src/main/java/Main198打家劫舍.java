@@ -27,6 +27,7 @@ public class Main198打家劫舍 {
         int a[] = new int[]{2, 7, 9, 3, 1};
         Solution solution = new Solution();
         System.out.println(solution.rob2(a));
+        test();
     }
 
     private static class Solution {
@@ -66,5 +67,30 @@ public class Main198打家劫舍 {
             return dp[0];
 
         }
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 [1,2,3,1] → 4
+        TestUtil.assertEquals(4, solution.rob2(new int[]{1, 2, 3, 1}), "示例用例 [1,2,3,1]");
+
+        // 测试用例2: 示例用例 [2,7,9,3,1] → 12
+        TestUtil.assertEquals(12, solution.rob2(new int[]{2, 7, 9, 3, 1}), "示例用例 [2,7,9,3,1]");
+
+        // 测试用例3: 边界用例 - 单个元素
+        TestUtil.assertEquals(0, solution.rob2(new int[]{}), "边界用例 空数组");
+
+        // 测试用例4: 边界用例 - 单个元素
+        TestUtil.assertEquals(5, solution.rob2(new int[]{5}), "边界用例 单个元素 [5]");
+
+        // 测试用例5: 两个元素取较大
+        TestUtil.assertEquals(2, solution.rob2(new int[]{1, 2}), "两个元素 [1,2]");
+
+        // 测试用例6: 普通用例 [2,1,1,2] → 4
+        TestUtil.assertEquals(4, solution.rob2(new int[]{2, 1, 1, 2}), "普通用例 [2,1,1,2]");
+
+        TestUtil.printSummary();
     }
 }

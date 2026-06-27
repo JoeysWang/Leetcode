@@ -51,4 +51,27 @@ public class Main16最接近三数之和 {
 
         return res;
     }
+
+    public static void main(String[] args) {
+        test();
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Main16最接近三数之和 obj = new Main16最接近三数之和();
+
+        // 测试用例1: 示例用例
+        TestUtil.assertEquals(2, obj.threeSumClosest(new int[]{-1, 2, 1, -4}, 1), "示例: [-1,2,1,-4] target=1");
+
+        // 测试用例2: 三数之和恰好等于target
+        TestUtil.assertEquals(6, obj.threeSumClosest(new int[]{1, 2, 3}, 6), "恰好等于target");
+
+        // 测试用例3: 普通用例
+        TestUtil.assertEquals(3, obj.threeSumClosest(new int[]{0, 1, 2}, 3), "普通: [0,1,2] target=3");
+
+        // 测试用例4: 负数target
+        TestUtil.assertEquals(-2, obj.threeSumClosest(new int[]{-1, -1, 0, 2}, -3), "负数target");
+
+        TestUtil.printSummary();
+    }
 }

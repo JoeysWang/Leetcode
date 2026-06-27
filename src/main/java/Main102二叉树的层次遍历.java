@@ -1,10 +1,77 @@
 import data.TreeNode;import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 public class Main102二叉树的层次遍历 {
 
+    public static void main(String[] args) {
+        test();
+    }
+
+    /**
+     * 辅助方法：根据数组构建二叉树（层序遍历），null表示空节点
+     */
+    private static TreeNode buildTree(Integer[] values) {
+        if (values == null || values.length == 0 || values[0] == null) return null;
+        TreeNode root = new TreeNode(values[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+        while (!queue.isEmpty() && i < values.length) {
+            TreeNode node = queue.poll();
+            if (i < values.length && values[i] != null) {
+                node.left = new TreeNode(values[i]);
+                queue.add(node.left);
+            }
+            i++;
+            if (i < values.length && values[i] != null) {
+                node.right = new TreeNode(values[i]);
+                queue.add(node.right);
+            }
+            i++;
+        }
+        return root;
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Main102二叉树的层次遍历 solution = new Main102二叉树的层次遍历();
+
+        // 测试用例1: 示例用例 - [3,9,20,null,null,15,7]
+        TreeNode tree1 = buildTree(new Integer[]{3, 9, 20, null, null, 15, 7});
+        List<List<Integer>> expected1 = Arrays.asList(
+                Arrays.asList(3),
+                Arrays.asList(9, 20),
+                Arrays.asList(15, 7)
+        );
+        TestUtil.assertArrayEquals2D(expected1, solution.levelOrder(tree1), "示例用例: [3,9,20,null,null,15,7]");
+
+        // 测试用例2: 边界用例 - 空树
+        List<List<Integer>> expected2 = new ArrayList<>();
+        TestUtil.assertArrayEquals2D(expected2, solution.levelOrder(null), "边界用例: 空树");
+
+        // 测试用例3: 边界用例 - 单节点
+        TreeNode tree3 = buildTree(new Integer[]{1});
+        List<List<Integer>> expected3 = Arrays.asList(Arrays.asList(1));
+        TestUtil.assertArrayEquals2D(expected3, solution.levelOrder(tree3), "边界用例: 单节点");
+
+        // 测试用例4: 只有左子树
+        TreeNode tree4 = buildTree(new Integer[]{1, 2, null, 3});
+        List<List<Integer>> expected4 = Arrays.asList(
+                Arrays.asList(1),
+                Arrays.asList(2),
+                Arrays.asList(3)
+        );
+        TestUtil.assertArrayEquals2D(expected4, solution.levelOrder(tree4), "普通用例: 只有左子树");
+
+        // 测试用例5: DFS方法测试
+        TreeNode tree5 = buildTree(new Integer[]{3, 9, 20, null, null, 15, 7});
+        TestUtil.assertArrayEquals2D(expected1, dfs(tree5), "普通用例: DFS方法测试");
+
+        TestUtil.printSummary();
+    }
 
     public List<List<Integer>> levelOrder(TreeNode root) {
         return bfs(root);

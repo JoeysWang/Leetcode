@@ -14,6 +14,32 @@ public class Main122买卖股票的最佳时机2 {
         int[] a = new int[]{7, 1, 5, 3, 6, 4};
         Solution solution = new Solution();
         System.out.println("max: " + solution.maxProfit(a));
+        test();
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 - [7,1,5,3,6,4]
+        TestUtil.assertEquals(7, solution.maxProfit(new int[]{7, 1, 5, 3, 6, 4}), "示例用例: [7,1,5,3,6,4]");
+
+        // 测试用例2: 示例用例 - 一直上涨
+        TestUtil.assertEquals(4, solution.maxProfit(new int[]{1, 2, 3, 4, 5}), "示例用例: 一直上涨");
+
+        // 测试用例3: 示例用例 - 一直下跌
+        TestUtil.assertEquals(0, solution.maxProfit(new int[]{7, 6, 4, 3, 1}), "示例用例: 一直下跌");
+
+        // 测试用例4: 边界用例 - 单个元素
+        TestUtil.assertEquals(0, solution.maxProfit(new int[]{5}), "边界用例: 单个元素");
+
+        // 测试用例5: 边界用例 - 两个元素上涨
+        TestUtil.assertEquals(1, solution.maxProfit(new int[]{1, 2}), "边界用例: 两个元素");
+
+        // 测试用例6: 普通用例 - 波动 (买1卖5=4, 买3卖6=3, 买2卖9=7, 共14)
+        TestUtil.assertEquals(14, solution.maxProfit(new int[]{1, 5, 3, 6, 2, 9}), "普通用例: 波动行情");
+
+        TestUtil.printSummary();
     }
 
     static class Solution {

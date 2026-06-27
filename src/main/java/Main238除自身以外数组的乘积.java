@@ -22,6 +22,7 @@ public class Main238除自身以外数组的乘积 {
         int[] res = solution.productExceptSelf(nums);
 
         System.out.println(Arrays.toString(res));
+        test();
     }
 
     static class Solution {
@@ -48,5 +49,27 @@ public class Main238除自身以外数组的乘积 {
 
             return res;
         }
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 [1,2,3,4] → [24,12,8,6]
+        TestUtil.assertArrayEquals(new int[]{24, 12, 8, 6}, solution.productExceptSelf(new int[]{1, 2, 3, 4}), "示例用例 [1,2,3,4]");
+
+        // 测试用例2: 含0的数组 [-1,1,0,-3,3] → [0,0,9,0,0]
+        TestUtil.assertArrayEquals(new int[]{0, 0, 9, 0, 0}, solution.productExceptSelf(new int[]{-1, 1, 0, -3, 3}), "含0用例 [-1,1,0,-3,3]");
+
+        // 测试用例3: 边界用例 两个元素 [1,2] → [2,1]
+        TestUtil.assertArrayEquals(new int[]{2, 1}, solution.productExceptSelf(new int[]{1, 2}), "边界用例 [1,2]");
+
+        // 测试用例4: 含两个0 [0,0,1,2] → [0,0,0,0]
+        TestUtil.assertArrayEquals(new int[]{0, 0, 0, 0}, solution.productExceptSelf(new int[]{0, 0, 1, 2}), "两个0用例 [0,0,1,2]");
+
+        // 测试用例5: 全1数组 [1,1,1,1] → [1,1,1,1]
+        TestUtil.assertArrayEquals(new int[]{1, 1, 1, 1}, solution.productExceptSelf(new int[]{1, 1, 1, 1}), "全1用例 [1,1,1,1]");
+
+        TestUtil.printSummary();
     }
 }

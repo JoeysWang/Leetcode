@@ -18,7 +18,32 @@ public class Main123买卖股票的最佳时机3 {
         tess.b = "b";
         swap(tess.a,tess.b);
         System.out.println("max: " + tess.a+" "+tess.b);
+        test();
+    }
 
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 - [3,3,5,0,0,3,1,4]
+        TestUtil.assertEquals(6, solution.maxProfit(new int[]{3, 3, 5, 0, 0, 3, 1, 4}), "示例用例: [3,3,5,0,0,3,1,4]");
+
+        // 测试用例2: 示例用例 - 一直上涨
+        TestUtil.assertEquals(4, solution.maxProfit(new int[]{1, 2, 3, 4, 5}), "示例用例: 一直上涨");
+
+        // 测试用例3: 示例用例 - 一直下跌
+        TestUtil.assertEquals(0, solution.maxProfit(new int[]{7, 6, 4, 3, 1}), "示例用例: 一直下跌");
+
+        // 测试用例4: 边界用例 - 单个元素
+        TestUtil.assertEquals(0, solution.maxProfit(new int[]{1}), "边界用例: 单个元素");
+
+        // 测试用例5: 两次独立交易 (买1卖6=5, 买2卖9=7, 共12)
+        TestUtil.assertEquals(12, solution.maxProfit(new int[]{1, 5, 3, 6, 2, 9}), "普通用例: 两次交易");
+
+        // 测试用例6: 两次交易更优 (买1卖4=3, 买2卖5=3, 共6)
+        TestUtil.assertEquals(6, solution.maxProfit(new int[]{1, 2, 4, 2, 5}), "普通用例: 两次交易更优");
+
+        TestUtil.printSummary();
     }
 
     private static void swap(String a, String b) {

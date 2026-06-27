@@ -16,7 +16,44 @@ public class Main292Nim游戏 {
         Solution solution = new Solution();
 
         System.out.println(solution.canWinNim(7));
+        test();
 
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 n=4 -> false
+        TestUtil.assertFalse(solution.canWinNim(4), "示例用例: n=4 无法获胜");
+
+        // 测试用例2: 边界用例 n=1 -> true
+        TestUtil.assertTrue(solution.canWinNim(1), "边界用例: n=1 先手拿1块获胜");
+
+        // 测试用例3: 边界用例 n=2 -> true
+        TestUtil.assertTrue(solution.canWinNim(2), "边界用例: n=2 先手拿2块获胜");
+
+        // 测试用例4: 边界用例 n=3 -> true
+        TestUtil.assertTrue(solution.canWinNim(3), "边界用例: n=3 先手拿3块获胜");
+
+        // 测试用例5: 普通用例 n=5 -> true (5不是4的倍数)
+        TestUtil.assertTrue(solution.canWinNim(5), "普通用例: n=5 可以获胜");
+
+        // 测试用例6: 普通用例 n=8 -> false (8是4的倍数)
+        TestUtil.assertFalse(solution.canWinNim(8), "普通用例: n=8 无法获胜");
+
+        // 测试用例7: 普通用例 n=7 -> true
+        TestUtil.assertTrue(solution.canWinNim(7), "普通用例: n=7 可以获胜");
+
+        // 测试用例8: 边界用例 n=0 -> false
+        TestUtil.assertFalse(solution.canWinNim(0), "边界用例: n=0 无石头");
+
+        // 验证 canWinNim2 方法一致性
+        for (int i = 0; i <= 20; i++) {
+            TestUtil.assertEquals(solution.canWinNim(i), solution.canWinNim2(i), "一致性验证: n=" + i);
+        }
+
+        TestUtil.printSummary();
     }
 
     static class Solution {

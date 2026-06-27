@@ -21,6 +21,31 @@ public class Main76最小覆盖子串 {
         String T = "ABC";
 
         System.out.println(minWindow(S, T));
+        test();
+    }
+
+    public static void test() {
+        TestUtil.reset();
+
+        // 测试用例1: 示例用例
+        TestUtil.assertEquals("BANC", minWindow("ADOBECODEBANC", "ABC"), "示例用例: ADOBECODEBANC/ABC");
+
+        // 测试用例2: s不包含t的所有字符
+        TestUtil.assertEquals("", minWindow("a", "aa"), "边界用例: 无法覆盖");
+
+        // 测试用例3: s和t相同
+        TestUtil.assertEquals("a", minWindow("a", "a"), "边界用例: 单字符匹配");
+
+        // 测试用例4: t是s的子串且连续
+        TestUtil.assertEquals("BANC", minWindow("ADOBECODEBANC", "ABC"), "普通用例: 最小覆盖");
+
+        // 测试用例5: s中包含t的多余字符
+        TestUtil.assertEquals("aa", minWindow("aa", "aa"), "边界用例: 重复字符");
+
+        // 测试用例6: 较长字符串
+        TestUtil.assertEquals("EBANC", minWindow("ADOBECODEBANC", "ABCE"), "普通用例: 较长目标串");
+
+        TestUtil.printSummary();
     }
 
     class Solution {

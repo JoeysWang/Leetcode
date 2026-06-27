@@ -2,6 +2,10 @@ import java.util.Arrays;
 
 public class Main1143最长公共子序列 {
 
+    public static void main(String[] args) {
+        test();
+    }
+
     /**
      * 给定两个字符串text1 和text2，返回这两个字符串的最长公共子序列的长度。
      * <p>
@@ -14,7 +18,32 @@ public class Main1143最长公共子序列 {
      * 输出：3
      * 解释：最长公共子序列是 "ace"，它的长度为 3。
      */
-    public class Solution {
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例
+        TestUtil.assertEquals(3, solution.longestCommonSubsequence("abcde", "ace"), "示例用例: abcde和ace");
+
+        // 测试用例2: 完全相同
+        TestUtil.assertEquals(3, solution.longestCommonSubsequence("abc", "abc"), "边界用例: 完全相同");
+
+        // 测试用例3: 无公共子序列
+        TestUtil.assertEquals(0, solution.longestCommonSubsequence("abc", "def"), "边界用例: 无公共子序列");
+
+        // 测试用例4: 一个为空
+        TestUtil.assertEquals(0, solution.longestCommonSubsequence("", "abc"), "边界用例: 空字符串");
+
+        // 测试用例5: 普通用例
+        TestUtil.assertEquals(2, solution.longestCommonSubsequence("abc", "ab"), "普通用例: abc和ab");
+
+        // 测试用例6: 较长字符串
+        TestUtil.assertEquals(4, solution.longestCommonSubsequence("abcd", "abcd"), "普通用例: 完全匹配");
+
+        TestUtil.printSummary();
+    }
+
+    public static class Solution {
 
 
         public int longestCommonSubsequence(String text1, String text2) {

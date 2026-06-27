@@ -36,6 +36,34 @@ public class Main57插入区间 {
         for (int i = 0; i < res.length; i++) {
             System.out.println(Arrays.toString(res[i]));
         }
+
+        test();
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例
+        int[][] intervals1 = {{1, 2}, {3, 5}, {6, 7}, {8, 10}, {12, 16}};
+        int[][] expected1 = {{1, 2}, {3, 10}, {12, 16}};
+        TestUtil.assertTrue(Arrays.deepEquals(expected1, solution.insert(intervals1, new int[]{4, 8})), "示例: 插入[4,8]");
+
+        // 测试用例2: 边界用例 - 空列表
+        int[][] expected2 = {{5, 7}};
+        TestUtil.assertTrue(Arrays.deepEquals(expected2, solution.insert(new int[][]{}, new int[]{5, 7})), "边界: 空列表插入");
+
+        // 测试用例3: 无重叠
+        int[][] intervals3 = {{1, 2}, {7, 9}};
+        int[][] expected3 = {{1, 2}, {3, 5}, {7, 9}};
+        TestUtil.assertTrue(Arrays.deepEquals(expected3, solution.insert(intervals3, new int[]{3, 5})), "普通: 无重叠插入");
+
+        // 测试用例4: 完全覆盖
+        int[][] intervals4 = {{3, 5}, {6, 8}};
+        int[][] expected4 = {{1, 10}};
+        TestUtil.assertTrue(Arrays.deepEquals(expected4, solution.insert(intervals4, new int[]{1, 10})), "普通: 完全覆盖");
+
+        TestUtil.printSummary();
     }
 
     static class Solution {

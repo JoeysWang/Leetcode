@@ -52,7 +52,44 @@ public class Main8字符串转换整数atoi {
 
 
         System.out.println(" result = " + solution.myAtoi("   -42"));
+        test();
+    }
 
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 - 正数
+        TestUtil.assertEquals(42, solution.myAtoi("42"), "示例用例: 42");
+
+        // 测试用例2: 示例用例 - 前导空格+负数
+        TestUtil.assertEquals(-42, solution.myAtoi("   -42"), "示例用例: 前导空格+负数");
+
+        // 测试用例3: 示例用例 - 数字后有多余字符
+        TestUtil.assertEquals(4193, solution.myAtoi("4193 with words"), "示例用例: 数字后有单词");
+
+        // 测试用例4: 示例用例 - 字母开头
+        TestUtil.assertEquals(0, solution.myAtoi("words and 987"), "示例用例: 字母开头返回0");
+
+        // 测试用例5: 示例用例 - 超出32位整数范围(负)
+        TestUtil.assertEquals(Integer.MIN_VALUE, solution.myAtoi("-91283472332"), "示例用例: 负数溢出返回INT_MIN");
+
+        // 测试用例6: 边界用例 - 空字符串
+        TestUtil.assertEquals(0, solution.myAtoi(""), "边界用例: 空字符串");
+
+        // 测试用例7: 边界用例 - 只有空格
+        TestUtil.assertEquals(0, solution.myAtoi("   "), "边界用例: 只有空格");
+
+        // 测试用例8: 边界用例 - 正号
+        TestUtil.assertEquals(42, solution.myAtoi("+42"), "边界用例: 正号");
+
+        // 测试用例9: 正数溢出
+        TestUtil.assertEquals(Integer.MAX_VALUE, solution.myAtoi("91283472332"), "边界用例: 正数溢出返回INT_MAX");
+
+        // 测试用例10: 前导零
+        TestUtil.assertEquals(123, solution.myAtoi("000123"), "普通用例: 前导零");
+
+        TestUtil.printSummary();
     }
 
     public static class Solution {

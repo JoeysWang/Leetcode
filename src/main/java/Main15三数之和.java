@@ -19,7 +19,7 @@ public class Main15三数之和 {
         Solution solution = new Solution();
 
         solution.threeSum(new int[]{-1, 0, 1, 2, -1, -4});
-
+        test();
 
     }
 
@@ -109,5 +109,36 @@ public class Main15三数之和 {
         }
 
         return res;
+    }
+
+    public static void test() {
+        TestUtil.reset();
+        Solution solution = new Solution();
+
+        // 测试用例1: 示例用例 - [-1,0,1,2,-1,-4] → [[-1,0,1],[-1,-1,2]]
+        List<List<Integer>> result1 = solution.threeSum(new int[]{-1, 0, 1, 2, -1, -4});
+        TestUtil.assertEquals(2, result1.size(), "示例用例: 应找到2组三元组");
+        TestUtil.assertTrue(result1.contains(Arrays.asList(-1, 0, 1)), "示例用例: 包含[-1,0,1]");
+        TestUtil.assertTrue(result1.contains(Arrays.asList(-1, -1, 2)), "示例用例: 包含[-1,-1,2]");
+
+        // 测试用例2: 边界用例 - 空数组 → []
+        List<List<Integer>> result2 = solution.threeSum(new int[]{});
+        TestUtil.assertEquals(0, result2.size(), "边界用例: 空数组无解");
+
+        // 测试用例3: 无解用例 - [1,2,3] → []
+        List<List<Integer>> result3 = solution.threeSum(new int[]{1, 2, 3});
+        TestUtil.assertEquals(0, result3.size(), "无解用例: [1,2,3]无三元组");
+
+        // 测试用例4: 全零用例 - [0,0,0] → [[0,0,0]]
+        List<List<Integer>> result4 = solution.threeSum(new int[]{0, 0, 0});
+        TestUtil.assertEquals(1, result4.size(), "全零用例: 应找到1组三元组");
+        TestUtil.assertTrue(result4.contains(Arrays.asList(0, 0, 0)), "全零用例: 包含[0,0,0]");
+
+        // 测试用例5: 重复元素 - [-1,0,1,0] → [[-1,0,1]]
+        List<List<Integer>> result5 = solution.threeSum(new int[]{-1, 0, 1, 0});
+        TestUtil.assertEquals(1, result5.size(), "重复元素用例: 应找到1组三元组");
+        TestUtil.assertTrue(result5.contains(Arrays.asList(-1, 0, 1)), "重复元素用例: 包含[-1,0,1]");
+
+        TestUtil.printSummary();
     }
 }
