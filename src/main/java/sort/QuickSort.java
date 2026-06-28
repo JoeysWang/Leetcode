@@ -2,66 +2,67 @@ package sort;
 
 import java.util.Arrays;
 
+/**
+ * 快速排序
+ *
+ * 记忆：选基准，分两边；左边小，右边大；再递归排左右。
+ * 这里用第一个元素作基准，partition 返回基准最后所在下标。
+ *
+ * 时间复杂度：平均 O(nlogn)，最坏 O(n^2)
+ * 空间复杂度：平均 O(logn)，原地排序，不稳定
+ */
 public class QuickSort {
 
     public static void main(String[] args) {
 
-        quickSort(new int[]{5, 8, 3, 4, 6, 1, 7}, 7);
+        int[] a = new int[]{5, 8, 3, 4, 6, 1, 7};
+        quickSort(a, a.length);
+        System.out.println(Arrays.toString(a));
     }
 
-    // 快速排序，a是数组，n表示数组的大小
+    // 快速排序：n 表示参与排序的元素个数。
     public static void quickSort(int[] a, int n) {
-        System.out.println(Arrays.toString(a) + " -- begin ");
+        if (a == null || n <= 1) return;
 
-        quickSortInternally(a, 0, n);
-        System.out.println(Arrays.toString(a) + " -- end ");
+        n = Math.min(n, a.length);
+        quickSortInternally(a, 0, n - 1);
     }
 
-    // 快速排序递归函数，begin,r为下标
+    // 左右闭区间：[begin, end]。
     private static void quickSortInternally(int[] a, int begin, int end) {
         if (begin >= end) return;
-        int pivot = partition(a, begin, end); // 获取分区点
-        System.out.println(Arrays.toString(a) + " -- begin=" + begin + " end=" + end + " pivot=" + a[pivot]);
 
-        quickSortInternally(a, begin, pivot);
+        int pivot = partition(a, begin, end); // 获取分区点
+
+        quickSortInternally(a, begin, pivot - 1);
         quickSortInternally(a, pivot + 1, end);
     }
 
 
     /**
-     * Partition函数 , 把一个数组分割开来，
-     * 返回一个pivot， pivot左边的都比他小，pivot右边的都比他大
-     * <p>
-     * 实际使用时还是双指针，因为pivot右边的值应该都要比它小，
-     * 所以在遇到比pivot小的数字的时候，
-     * 把这个值交换到pivot的右边，然后pivot加1，最后再把一开始的pivot和最后的pivot交换
+     * partition：把数组切成三段。
+     * [begin + 1, lessEnd] 是小于 pivotValue 的区间。
+     * [lessEnd + 1, i) 是大于等于 pivotValue 的区间。
+     * 扫描结束后，把 begin 上的基准值交换到 lessEnd，基准值就归位了。
      */
     private static int partition(int[] nums, int begin, int end) {
-        //枢轴(也可以是在begin和end之间的随机数)
-        int pivot = begin;
-        //缓存一开始的pivot，最后在循环结束后交换到指定的pivot位置
-        int originPivot = pivot;
+        int pivotValue = nums[begin];
+        int lessEnd = begin;
 
-
-        for (int i = begin + 1; i < end; i++) {
-            if (nums[i] < nums[begin]) {
-                swap(nums, pivot + 1, i);
-                pivot++;
-
-            } else {
-                continue;
+        for (int i = begin + 1; i <= end; i++) {
+            if (nums[i] < pivotValue) {
+                lessEnd++;
+                swap(nums, lessEnd, i);
             }
         }
 
-        swap(nums, originPivot, pivot);
+        swap(nums, begin, lessEnd);
 
-        return pivot;
+        return lessEnd;
     }
 
 
     private static void swap(int[] nums, int index1, int index2) {
-        System.out.println("\t" + Arrays.toString(nums) + " -- 交换=" + nums[index1] + " " + nums[index2]);
-
         int temp = nums[index1];
         nums[index1] = nums[index2];
         nums[index2] = temp;

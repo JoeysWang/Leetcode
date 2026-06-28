@@ -1,18 +1,22 @@
-package sort;import java.util.Arrays;
+package sort;
+
+import java.util.Arrays;
 
 /**
  * 归并排序
  *
- * 把一个数组不断从中间对半劈开, 直到数组只有两个元素，进行排序
- * 把刚才的排序结果，一层一层合并回去
+ * 记忆：先拆，再合。
+ * 拆：不断从中间劈成左右两半，直到只剩 1 个元素。
+ * 合：两个有序小数组合并成一个有序大数组。
  *
- * 归并排序的时间复杂度任何情况下都是 O(nlogn) ,非原地排序
+ * 时间复杂度：任何情况都是 O(nlogn)
+ * 空间复杂度：O(n)，非原地排序，稳定
  */
 public class MergeSort {
     public static void main(String[] args) {
 
         MergeSortSolution solution = new MergeSortSolution();
-        int[] result = solution.mergeSort(new int[]{6,1241,2,54,3213,9,214,21,12,3,4,55,23,2});
+        int[] result = solution.mergeSort(new int[]{6, 1241, 2, 54, 3213, 9, 214, 21, 12, 3, 4, 55, 23, 2});
         System.out.println("result  " + Arrays.toString(result));
 
     }
@@ -23,32 +27,21 @@ public class MergeSort {
 
             if (nums == null || nums.length < 2) return nums;
 
-            int left = 0;
-            int right = nums.length-1;
-
-            int middle = left + (right - left) / 2;
-            return merge(sortOrDivide(nums, left, middle), sortOrDivide(nums, middle+1, right));
+            return sortOrDivide(nums, 0, nums.length - 1);
         }
+
         private int[] sortOrDivide(int[] nums, int left, int right) {
 
+            // 递归出口：一个元素天然有序。
             if (left == right) {
                 return new int[]{nums[left]};
             }
-            if (left == right - 1) {
 
-                int[] result = new int[2];
-                if (nums[left] < nums[right]) {
-                    result[0] = nums[left];
-                    result[1] = nums[right];
-                } else {
-                    result[1] = nums[left];
-                    result[0] = nums[right];
-                }
-                return result;
-            }
             int middle = left + (right - left) / 2;
-            return merge(sortOrDivide(nums, left, middle), sortOrDivide(nums, middle+1, right));
+            int[] leftNums = sortOrDivide(nums, left, middle);
+            int[] rightNums = sortOrDivide(nums, middle + 1, right);
 
+            return merge(leftNums, rightNums);
         }
 
         private int[] merge(int[] left, int[] right) {
@@ -57,28 +50,32 @@ public class MergeSort {
 
             int[] nums = new int[leftLength + rightLength];
 
-            int postion = 0;
+            int position = 0;
             int i = 0;
             int j = 0;
+
+            // 两个数组都已排好序，每次拿较小的头部元素放入结果。
             while (i != leftLength && j != rightLength) {
-                if (left[i] < right[j]) {
-                    nums[postion] = left[i];
+                if (left[i] <= right[j]) {
+                    nums[position] = left[i];
                     i++;
                 } else {
-                    nums[postion] = right[j];
+                    nums[position] = right[j];
                     j++;
                 }
-                postion++;
+                position++;
             }
+
+            // 其中一边用完后，把另一边剩下的元素直接接到结果后面。
             while (i != leftLength) {
-                nums[postion] = left[i];
+                nums[position] = left[i];
                 i++;
-                postion++;
+                position++;
             }
             while (j != rightLength) {
-                nums[postion] = right[j];
+                nums[position] = right[j];
                 j++;
-                postion++;
+                position++;
             }
 
             return nums;
