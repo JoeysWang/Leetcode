@@ -71,6 +71,51 @@ public class Chapter00MustReadAnswer {
         }
     }
 
+    // DFS 模板：深度优先，一条路走到底，再回退走别的路。
+    public void dfsTemplate(int[][] graph, int start) {
+        boolean[] visited = new boolean[graph.length];
+        dfsTemplate(graph, start, visited);
+    }
+
+    private void dfsTemplate(int[][] graph, int node, boolean[] visited) {
+        // 这个点来过了，直接返回，避免环导致无限递归。
+        if (visited[node]) {
+            return;
+        }
+
+        // 第一次来到这个点，立刻标记。
+        visited[node] = true;
+        System.out.println("DFS visit node: " + node);
+
+        // graph[node] 是 node 的邻居列表，next 才是下一个节点编号。
+        for (int next : graph[node]) {
+            dfsTemplate(graph, next, visited);
+        }
+    }
+
+    // BFS 模板：广度优先，先访问离 start 最近的一层，再访问下一层。
+    public void bfsTemplate(int[][] graph, int start) {
+        boolean[] visited = new boolean[graph.length];
+        Queue<Integer> queue = new ArrayDeque<>();
+
+        // BFS 推荐入队时就标记，避免同一个点被重复放进队列。
+        queue.offer(start);
+        visited[start] = true;
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.println("BFS visit node: " + node);
+
+            for (int next : graph[node]) {
+                if (visited[next]) {
+                    continue;
+                }
+                visited[next] = true;
+                queue.offer(next);
+            }
+        }
+    }
+
     // 322. Coin Change
     public int coinChange(int[] coins, int amount) {
         int impossible = amount + 1;
@@ -209,6 +254,118 @@ public class Chapter00MustReadAnswer {
         }
         int index = left - 1;
         return index >= 0 && nums[index] == target ? index : -1;
+    }
+
+    // 滑动窗口 Java 框架
+    public void slidingWindowTemplate(String s, String t) {
+        // need：题目要求窗口里必须包含哪些字符，以及每个字符需要几个。
+        // 例如 t = "AABC"，那么 need['A'] = 2, need['B'] = 1, need['C'] = 1。
+        Map<Character, Integer> need = new HashMap<>();
+
+        // window：当前窗口 [left, right) 里面已经有哪些字符，以及每个字符有几个。
+        // 它会随着 right 右移而增加，随着 left 右移而减少。
+        Map<Character, Integer> window = new HashMap<>();
+
+        // 先把 t 里面的字符需求统计出来。
+        for (char c : t.toCharArray()) {
+            need.put(c, need.getOrDefault(c, 0) + 1);
+        }
+
+        // left 和 right 共同表示一个窗口。
+        // 这里使用左闭右开区间 [left, right)，意思是：
+        // 包含 left 位置，不包含 right 位置。
+        int left = 0;
+        int right = 0;
+
+        // valid：有多少种字符已经满足 need 的要求。
+        // 例如 need 里有 A、B、C 三种字符，valid == 3 就表示这三种字符数量都够了。
+        int valid = 0;
+
+        // 下面这些变量不是每道题都需要，只是用来提醒“答案应该在哪里更新”。
+        // 最小覆盖子串这类题，常用 bestStart / bestLen 记录最短窗口。
+        int bestStart = 0;
+        int bestLen = Integer.MAX_VALUE;
+
+        // 最长无重复子串这类题，常用 maxLen 记录最长窗口长度。
+        int maxLen = 0;
+
+        while (right < s.length()) {
+            // c 是将移入窗口的字符。
+            char c = s.charAt(right);
+
+            // right 先右移一格，把 c 纳入窗口。
+            // 因为 right++ 后，窗口仍然按 [left, right) 理解。
+            right++;
+
+            // 如果 c 是题目关心的字符，就更新 window。
+            // 如果 c 不在 need 里，说明这个字符对当前题目没用，可以忽略。
+            if (need.containsKey(c)) {
+                window.put(c, window.getOrDefault(c, 0) + 1);
+
+                // 当 window 中 c 的数量刚好等于 need 中 c 的数量，
+                // 说明 c 这个字符的需求满足了，valid 加一。
+                if (window.get(c).equals(need.get(c))) {
+                    valid++;
+                }
+            }
+
+            // debug 输出的位置：窗口是左闭右开区间 [left, right)。
+            System.out.println("window: [" + left + ", " + right + ")");
+
+            // 更新答案位置 1：扩大窗口之后。
+            // 有些题在这里更新，例如“固定长度窗口”或某些计数类题。
+            // 但不是所有题都在这里更新，所以先记住：答案更新位置要看题目。
+
+            // 判断左侧窗口是否要收缩。
+            // 注意：这里的条件每道题不同。
+            // 最小覆盖子串：满足条件后收缩，尝试找更短答案。
+            // 无重复最长子串：重复了就收缩，直到不重复。
+            // 找异位词：窗口长度够了就收缩，保持固定长度。
+            while (windowNeedsShrink(need, window, valid)) {
+                // 更新答案位置 2：窗口满足条件，并且即将收缩之前。
+                // 最小覆盖子串 minWindow 就是在这里更新答案：
+                // 因为此时 [left, right) 已经覆盖了 t，先记录当前长度，再尝试缩短。
+                if (right - left < bestLen) {
+                    bestStart = left;
+                    bestLen = right - left;
+                }
+
+                // d 是将移出窗口的字符。
+                char d = s.charAt(left);
+
+                // left 右移一格，把 d 移出窗口。
+                left++;
+
+                // 如果 d 是题目关心的字符，移出去以后也要更新 window。
+                if (need.containsKey(d)) {
+                    // 如果移出 d 之前，d 的数量正好满足 need，
+                    // 那移出去之后就不满足了，所以 valid 减一。
+                    if (window.get(d).equals(need.get(d))) {
+                        valid--;
+                    }
+                    window.put(d, window.get(d) - 1);
+                }
+            }
+
+            // 更新答案位置 3：收缩完成之后。
+            // 最长无重复子串这类题常在这里更新：
+            // while 结束后，窗口重新变合法，此时可以拿 right - left 更新最长长度。
+            maxLen = Math.max(maxLen, right - left);
+        }
+
+        // 如果这是 minWindow，最后会返回：
+        // bestLen == Integer.MAX_VALUE ? "" : s.substring(bestStart, bestStart + bestLen)
+        //
+        // 如果这是最长无重复子串，最后会返回：
+        // maxLen
+    }
+
+    // 真实做题时，这个判断条件要按题目改：
+    // 最小覆盖子串：valid == need.size()
+    // 最长无重复子串：window.get(c) > 1
+    // 固定长度异位词：right - left >= t.length()
+    private boolean windowNeedsShrink(Map<Character, Integer> need, Map<Character, Integer> window, int valid) {
+        return valid == need.size();
     }
 
     // 76. Minimum Window Substring

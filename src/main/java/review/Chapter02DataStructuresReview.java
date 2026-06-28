@@ -7,12 +7,12 @@ import java.util.List;
 
 /**
  * 第二章、数据结构系列。
- *
+ * <p>
  * 默写目标：
  * 1. 先写清楚数据结构不变量，再写 API。
  * 2. 能从数组、链表两种底层结构解释上层结构。
  * 3. 重点默写：堆、LRU、BST、单调栈、单调队列、链表反转。
- *
+ * <p>
  * 对应题目：
  * 1, 20, 206, 102, 200, 215, 347, 295, 23, 146, 460, 98, 700,
  * 701, 450, 230, 538, 222, 496, 503, 739, 84, 42, 239, 862,
@@ -134,7 +134,16 @@ public class Chapter02DataStructuresReview {
 
     // 递归反转链表
     public ListNode reverseList(ListNode head) {
-        throw todo("206 Reverse Linked List");
+        return traverseReverseList(head, null);
+    }
+
+    private ListNode traverseReverseList(ListNode head, ListNode last) {
+        if (head == null) {
+            return last;
+        }
+        ListNode next = head.next;
+        head.next = last;
+        return traverseReverseList(next, head);
     }
 
     public ListNode reverseBetween(ListNode head, int left, int right) {
@@ -142,7 +151,35 @@ public class Chapter02DataStructuresReview {
     }
 
     public ListNode reverseKGroup(ListNode head, int k) {
-        throw todo("25 Reverse Nodes in k-Group");
+        ListNode groupStart = head;
+        ListNode groupEnd = head;
+        for (int i = 0; i < k; i++) {
+            if (groupEnd == null) {
+                return groupStart;
+            }
+            groupEnd = groupEnd.next;
+        }
+
+        ListNode newHead = reverseRange(groupStart, groupEnd);
+        // reverseKGroup 里接下一组的是 groupStart，因为 groupStart 反转后变成尾巴
+        groupStart.next = reverseKGroup(groupEnd, k);
+
+        return newHead;
+    }
+
+
+    private ListNode reverseRange(ListNode groupStart, ListNode groupEnd) {
+        // reverseRange 返回 prev，因为 prev 是反转后的新头
+        ListNode prev = null;
+        ListNode current = groupStart;
+
+        while (current != groupEnd) {
+            ListNode next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        return prev;
     }
 
     // 队列实现栈 / 栈实现队列

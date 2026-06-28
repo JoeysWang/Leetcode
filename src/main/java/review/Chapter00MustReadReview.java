@@ -1,9 +1,10 @@
 package review;
 
 import data.ListNode;
+import data.Node;
 import data.TreeNode;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * 第零章、必读系列。
@@ -34,7 +35,7 @@ public class Chapter00MustReadReview {
     }
 
     public void traverseList(ListNode head) {
-        for (ListNode p = head; p != null; p = head.next) {
+        for (ListNode p = head; p != null; p = p.next) {
             System.out.println(p);
         }
     }
@@ -49,10 +50,58 @@ public class Chapter00MustReadReview {
     }
 
     public void traverseGraph(int[][] graph) {
+        boolean[] visited = new boolean[graph.length];
         for (int i = 0; i < graph.length; i++) {
-            int[] now = graph[i];
-            for (int j = 0; j < now.length; j++) {
-                System.out.println("int[" + i + "][" + j + "]=" + now[j]);
+            dfsGraph(graph, visited, i);
+        }
+    }
+
+    private void dfsGraph(int[][] graph, boolean[] visited, int node) {
+        if (visited[node]) {
+            return;
+        }
+        visited[node] = true;
+        System.out.println("访问节点: " + node);
+        for (int next : graph[node]) {
+            dfsGraph(graph, visited, next);
+        }
+    }
+
+    // DFS/BFS 代码框架默写题：
+    // graph[node] 表示 node 能直接去到的所有邻居。
+    // 目标：从 start 出发，按 DFS 深度优先遍历所有能到达的点。
+    public void dfsTemplate(Node node) {
+        if (node.childern != null) {
+            for (Node child : node.childern) {
+                dfsTemplate(child);
+            }
+        }
+    }
+
+    // DFS/BFS 代码框架默写题：
+    // 目标：从 start 出发，按 BFS 广度优先一层一层遍历所有能到达的点。
+    public void bfsTemplate(Node node, int start) {
+        if (node == null) {
+            return;
+        }
+        Map<Node, Boolean> visitted = new HashMap<>();
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.offer(node);
+        visitted.put(node, true);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++) {
+                Node now = queue.poll();
+                System.out.println("访问节点: " + now);
+                for (Node child : node.childern) {
+                    if (visitted.containsKey(node)) {
+                        continue;
+                    }
+                    queue.offer(child);
+                    visitted.put(node, true);
+
+                }
             }
         }
     }
@@ -81,21 +130,141 @@ public class Chapter00MustReadReview {
 
     // 二分查找解题套路框架：普通查找、左边界、右边界
     public int binarySearch(int[] nums, int target) {
-        throw todo("704 Binary Search");
+        if (nums.length < 1)
+            return -1;
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            }
+        }
+        return -1;
     }
 
     public int leftBound(int[] nums, int target) {
-        throw todo("34 左边界");
+        if (nums.length < 1) {
+            return -1;
+        }
+
+        int left = 0;
+        int right = nums.length - 1;
+        while (left <= right) {
+
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                right = mid - 1;
+            } else if (nums[mid] < target) {
+                left = right + 1;
+            } else if (nums[mid] > target) {
+                right = left - 1;
+            }
+        }
+        if (left < 0 || nums[left] != target)
+            return -1;
+        return left;
     }
 
     public int rightBound(int[] nums, int target) {
-        throw todo("34 右边界");
+        if (nums.length < 1) {
+            return -1;
+        }
+        int left = 0;
+        int right = nums.length - 1;
+        while (left <= right) {
+
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                left = mid + 1;
+            } else if (nums[mid] < target) {
+                left = right + 1;
+            } else if (nums[mid] > target) {
+                right = left - 1;
+            }
+        }
+        if (right == nums.length || nums[right] != target)
+            return -1;
+        return right;
+    }
+
+    // 滑动窗口算法框架默写题：
+    // 把 labuladong 的 C++ 框架翻译成 Java，重点默写：
+    // 1. need/window 两个计数器
+    // 2. right 右移扩大窗口
+    // 3. while 判断是否收缩窗口
+    // 4. left 左移缩小窗口
+    // 5. 在正确位置更新答案：最长类多在收缩后，最短类多在收缩前
+    public void slidingWindowTemplate(String s, String t) {
+        throw todo("滑动窗口 Java 框架：HashMap + left/right + valid");
     }
 
     // 滑动窗口解题套路框架：扩大窗口、收缩窗口、更新答案
     public String minWindow(String s, String t) {
-        throw todo("76 Minimum Window Substring");
+        // 1, 先建立关键变量，需要的字符的数量、窗口里已经有的字符的数量、左指针、右指针；答案起始点、答案长度；
+        // 2, 统计好滑动窗口需要哪些东西，这样在收缩或者扩大时才知道是否需要更新答案。
+
+
+        HashMap<Character, Integer> need = new HashMap<>();
+        HashMap<Character, Integer> window = new HashMap<>();
+        int bestStart = 0;
+        int bestLen = Integer.MAX_VALUE;
+        int valid = 0;
+
+        for (int i = 0; i < t.length(); i++) {
+            need.put(t.charAt(i), need.getOrDefault(t.charAt(i), 0) + 1);
+        }
+
+
+        int left = 0;
+        int right = 0;
+
+        while (right < s.length()) {
+            Character nowChar = s.charAt(right);
+            right++;
+
+            window.put(nowChar, window.getOrDefault(nowChar, 0) + 1);
+
+            if (need.containsKey(nowChar)) {
+                if (window.get(nowChar).equals(need.get(nowChar))) {
+                    valid++;
+                }
+            }
+
+            while (valid == need.size()) {
+
+                int currentLen = right - left;
+                if (currentLen < bestLen) {
+                    bestLen = currentLen;
+                    bestStart = left;
+                }
+
+                Character removeChar = s.charAt(left);
+                left++;
+
+
+                if (need.containsKey(removeChar) && need.get(removeChar).equals(window.get(removeChar))) {
+
+                    valid--;
+                }
+                window.put(removeChar, window.get(removeChar) - 1);
+
+            }
+
+        }
+
+        if (bestLen < Integer.MAX_VALUE) {
+            return s.substring(bestStart, bestStart + bestLen);
+        }
+        return "";
     }
+
 
     public int lengthOfLongestSubstring(String s) {
         throw todo("3 Longest Substring Without Repeating Characters");
@@ -107,8 +276,52 @@ public class Chapter00MustReadReview {
     }
 
     public int[] twoSumSorted(int[] numbers, int target) {
-        throw todo("167 Two Sum II");
+        int[] res = new int[]{-1, -1};
+        if (numbers.length < 2)
+            return res;
+        int left = 0;
+        int right = numbers.length - 1;
+
+
+        while (left < right) {
+            int sum = numbers[left] + numbers[right];
+            if (sum == target) {
+                res[0] = left;
+                res[1] = right;
+                return res;
+            } else if (sum < target) {
+                left++;
+            } else if (sum > target) {
+                right--;
+            }
+        }
+        return res;
     }
+
+    public int[] threeSumSorted(int[] numbers, int target) {
+        int[] res = new int[]{-1, -1, -1};
+
+        if (numbers.length < 3)
+            return res;
+
+        for (int i = 0; i < numbers.length - 2; i++) {
+
+            int left = i + 1;
+            int right = numbers.length - 1;
+            while (left < right) {
+                int sum = numbers[i] + numbers[left] + numbers[right];
+                if (sum == target) {
+                    return new int[]{i, left, right};
+                } else if (sum < target) {
+                    left++;
+                } else if (sum > target) {
+                    right--;
+                }
+            }
+        }
+        return new int[]{-1, -1, -1};
+    }
+
 
     // BFS 算法套路框架：队列、层数、visited
     public int minDepth(TreeNode root) {
