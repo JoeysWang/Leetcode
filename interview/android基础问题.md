@@ -677,6 +677,8 @@ HTTPS 请求通过 SSLSocketFactory、TrustManager、HostnameVerifier 建立 TLS
 
 HTTP 明文传输，HTTPS 在 HTTP 与 TCP 之间加入 TLS，提供加密、完整性校验和身份认证。HTTPS 需要证书校验和 TLS 握手，性能成本可通过连接复用、会话恢复、HTTP/2 等降低。
 
+TLS 握手阶段主要使用非对称机制做身份认证和密钥协商，例如通过证书公钥验签、用 ECDHE 协商会话密钥；握手完成后，HTTP 请求和响应使用协商出的会话密钥做对称加密传输，常见如 AES-GCM、ChaCha20-Poly1305。TLS 1.2 完整握手通常是 2 个 RTT，TLS 1.3 完整握手通常是 1 个 RTT，会话恢复还可能支持 0-RTT，但有重放风险。
+
 ### 137. HTTP 1.0、1.1、2.0 有什么区别？
 
 HTTP/1.0 默认短连接；HTTP/1.1 支持持久连接、Host、分块传输、更多缓存控制；HTTP/2 使用二进制分帧、多路复用、头部压缩和服务端推送能力，能减少队头阻塞，但 TCP 层队头阻塞仍存在。
