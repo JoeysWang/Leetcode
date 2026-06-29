@@ -4,10 +4,10 @@ import java.util.Arrays;
 
 /**
  * 冒泡排序
- *
+ * <p>
  * 记忆：相邻比较，大的往右冒。
  * 每一轮结束后，当前未排序区间的最大值都会到最右边。
- *
+ * <p>
  * 时间复杂度：最好 O(n)，平均/最坏 O(n^2)
  * 空间复杂度：O(1)，原地排序，稳定
  */
@@ -18,6 +18,22 @@ public class BubbleSort {
 
         bubbleSort(a, a.length);
         System.out.println(Arrays.toString(a));
+    }
+
+    public static void bubbleSort2(int[] a, int n) {
+        n = Math.min(n, a.length - 1);
+        boolean swap = false;
+        for (int i = 0; i < n; i++) {
+
+            for (int j = 0; j < n - i; j++) {
+                if (a[j] < a[j + 1]) {
+                    swap(a, j, j + 1);
+                    swap = true;
+                }
+            }
+            if (!swap)
+                return;
+        }
     }
 
     public static void bubbleSort(int[] a, int n) {
