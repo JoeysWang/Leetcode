@@ -1,4 +1,6 @@
-package offer;import data.TreeNode;
+package tree.bst;
+
+import data.TreeNode;
 
 public class 二叉搜索树 {
 

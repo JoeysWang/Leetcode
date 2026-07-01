@@ -1,4 +1,7 @@
+package tree.bst;
+
 import data.TreeNode;
+import tree.util.TestUtil;
 
 /**
  * 给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
@@ -12,18 +15,13 @@ import data.TreeNode;
 public class Main235二叉搜索树的最近公共祖先 {
 
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || p == null || q == null) return null;
-
-
-        if (p.val <= root.val && q.val >= root.val)
-            return root;
-
+        // p、q 都比 root 小 → 都在左子树
         if (p.val < root.val && q.val < root.val)
             return lowestCommonAncestor(root.left, p, q);
+        // p、q 都比 root 大 → 都在右子树
         if (p.val > root.val && q.val > root.val)
             return lowestCommonAncestor(root.right, p, q);
-
-
+        // p、q 分居两侧（或其中一个就是 root）→ root 就是 LCA
         return root;
     }
 
@@ -33,13 +31,13 @@ public class Main235二叉搜索树的最近公共祖先 {
 
     /**
      * 构建BST:
-     *         6
-     *        / \
-     *       2   8
-     *      / \ / \
-     *     0  4 7  9
-     *       / \
-     *      3   5
+     * 6
+     * / \
+     * 2   8
+     * / \ / \
+     * 0  4 7  9
+     * / \
+     * 3   5
      */
     private static TreeNode buildTestBST() {
         TreeNode root = new TreeNode(6);

@@ -1,4 +1,9 @@
+package tree.basic;
+
 import data.TreeNode;
+import tree.util.TestUtil;
+
+import javax.swing.*;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -60,20 +65,17 @@ public class Main104二叉树的最大深度 {
     }
 
     public int maxDepth(TreeNode root) {
-        return depth(root, 0);
+        return dfs(root);
     }
 
-    /**
-     *  dfs
-     */
-    public int depth(TreeNode treeNode, int cureentLevel) {
-        if (treeNode == null)
+    private int dfs(TreeNode node) {
+        if (node == null) {
             return 0;
-
-        if (treeNode.left == null && treeNode.right == null)
-            return cureentLevel + 1;
-
-        return Math.max(depth(treeNode.left, cureentLevel+1), depth(treeNode.right, cureentLevel+1));
-
+        }
+        return Math.max(
+                dfs(node.left),
+                dfs(node.right)
+        ) + 1;
     }
+
 }

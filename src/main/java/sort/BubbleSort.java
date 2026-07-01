@@ -20,22 +20,6 @@ public class BubbleSort {
         System.out.println(Arrays.toString(a));
     }
 
-    public static void bubbleSort2(int[] a, int n) {
-        n = Math.min(n, a.length - 1);
-        boolean swap = false;
-        for (int i = 0; i < n; i++) {
-
-            for (int j = 0; j < n - i; j++) {
-                if (a[j] < a[j + 1]) {
-                    swap(a, j, j + 1);
-                    swap = true;
-                }
-            }
-            if (!swap)
-                return;
-        }
-    }
-
     public static void bubbleSort(int[] a, int n) {
         if (a == null || n <= 1) return;
 

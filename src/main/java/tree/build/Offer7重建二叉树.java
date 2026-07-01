@@ -1,4 +1,7 @@
-package offer;import data.TreeNode;import java.util.HashMap;
+package tree.build;
+
+import data.TreeNode;
+import java.util.HashMap;
 
 public class Offer7重建二叉树 {
 
