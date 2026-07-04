@@ -13,7 +13,7 @@
 | [第二章：数据结构](第二章_数据结构.md) | 堆、中位数、LRU、BST、单调栈、滑动窗口最大值、Twitter、链表反转、栈/队列互模拟 | 21 |
 | [第三章：算法思维](第三章_算法思维.md) | 回溯、滑动窗口、双指针、位运算、栈、前缀和、大数运算、DFS网格、区间合并、随机、树 | 38 |
 | [第四章：高频面试题](第四章_高频面试题.md) | 素数、快速幂、二分变体、二分答案、双指针、快慢指针、链表、括号、位运算、并查集、博弈 | 41 |
-| [第五章：计算机基础](第五章_计算机基础.md) | Shell命令、SQL题、正则匹配、通配符匹配、进程/线程/文件描述符、Cookie/Session/Token、加密 | 16 |
+| [第五章：计算机基础](第五章_计算机基础.md) | Shell命令、SQL题、正则匹配、通配符匹配、进程/线程/文件描述符、Cookie/Session/Token、加密、Java锁(synchronized/ReentrantLock/Condition)、交替打印 | 19 |
 
 ---
 
@@ -43,3 +43,6 @@
 - [进程线程概念](第五章_计算机基础.md#14-概念进程线程文件描述符)
 - [Cookie/Session/Token](第五章_计算机基础.md#15-概念cookiesessiontoken)
 - [加密基础](第五章_计算机基础.md#16-概念加密基础)
+- [synchronized](第五章_计算机基础.md#17-java-锁synchronized)
+- [ReentrantLock 与 Condition](第五章_计算机基础.md#18-java-锁reentrantlock-与-condition)
+- [两个线程交替打印](第五章_计算机基础.md#19-实战两个线程交替打印)
