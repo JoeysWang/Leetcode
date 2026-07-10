@@ -365,7 +365,11 @@ Bundle 本质是 key-value 容器，内部常用 ArrayMap/Map 结构保存数据
 
 ### 56. Serializable 和 Parcelable 有什么区别？
 
-Serializable 是 Java 标准序列化，使用简单但反射和临时对象较多，性能一般。Parcelable 是 Android 专用序列化，手写读写字段，性能更好，适合进程间和组件间高频传输。
+Serializable 是 Java 标准序列化机制，只要类实现 `java.io.Serializable` 接口即可，通常不需要手写序列化代码。它会按 Java 对象序列化规则处理对象图、类信息和字段，使用方便，但运行时依赖反射和中间对象，生成的数据也更重，性能和内存开销都比较一般。字段兼容还要关注 `serialVersionUID`，`transient` 字段不会被序列化。
+
+Parcelable 是 Android 为组件间传参和 Binder IPC 设计的序列化机制。类需要实现 `Parcelable`，在 `writeToParcel` 中把字段按顺序写入 `Parcel`，再通过 `CREATOR` 按同样顺序读出；Kotlin 中常用 `@Parcelize` 减少样板代码。因为它不需要像 Serializable 那样保存完整 Java 序列化元信息，读写更直接，临时对象更少，所以在 Android 的 `Intent`、`Bundle`、AIDL 参数等场景中通常性能更好。
+
+两者选择上：少量、低频、临时传递数据时 Serializable 胜在简单；Android 组件间传对象、跨进程传输或列表数据较多时优先 Parcelable。Parcelable 不适合当作长期持久化或网络协议格式，因为它强依赖字段读写顺序和 Android 的 Parcel 实现；长期存储和接口通信更推荐 JSON、Protocol Buffers、数据库等稳定格式。无论使用哪种，都不应该通过 Intent/Bundle 传大对象、大 Bitmap 或超大列表，Binder 事务大小有限，通常应传 id、Uri、文件路径或通过 ContentProvider/数据库共享数据。
 
 ### 57. SharedPreferences 可以跨进程通信吗？
 
@@ -491,7 +495,92 @@ AQS 是 AbstractQueuedSynchronizer，JUC 中很多同步器的基础。它用一
 
 ### 87. 双重检查单例为什么要加 volatile？
 
-对象创建可能发生指令重排序：分配内存、初始化对象、引用赋值。如果引用赋值先于初始化，其他线程可能拿到半初始化对象。`volatile` 可以禁止这种重排序，并保证实例对其他线程可见。
+双重检查锁，也叫 DCL，核心是“第一次判空避免每次加锁，进入锁后第二次判空保证只创建一次”。单例引用必须加 `volatile`，因为对象创建可能发生指令重排序：分配内存、初始化对象、引用赋值。如果引用赋值先于初始化，其他线程可能拿到半初始化对象。`volatile` 可以禁止这种重排序，并保证实例对其他线程可见。
+
+双重检查锁常见实现方式有三种。
+
+方式一，Java 标准 DCL：
+
+```java
+public final class Singleton {
+    private static volatile Singleton instance;
+
+    private Singleton() {
+    }
+
+    public static Singleton getInstance() {
+        if (instance == null) {
+            synchronized (Singleton.class) {
+                if (instance == null) {
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+}
+```
+
+方式二，Kotlin `companion object` 写法：
+
+```kotlin
+class Singleton private constructor() {
+    companion object {
+        @Volatile
+        private var instance: Singleton? = null
+
+        fun getInstance(): Singleton {
+            return instance ?: synchronized(this) {
+                instance ?: Singleton().also { instance = it }
+            }
+        }
+    }
+}
+```
+
+方式三，Android 中带参数初始化的 DCL，例如 Repository、Manager 需要 `Context` 时：
+
+```kotlin
+class AppRepository private constructor(context: Context) {
+    private val appContext = context.applicationContext
+
+    companion object {
+        @Volatile
+        private var instance: AppRepository? = null
+
+        fun getInstance(context: Context): AppRepository {
+            return instance ?: synchronized(this) {
+                instance ?: AppRepository(context.applicationContext).also {
+                    instance = it
+                }
+            }
+        }
+    }
+}
+```
+
+第三种要注意不要持有 Activity、Fragment、View 这类短生命周期对象，应转成 `applicationContext`。
+
+还有一种常见的懒加载单例是静态内部类 Holder 写法，它不是双重检查锁，但经常和 DCL 一起考：
+
+```java
+public final class Singleton {
+    private Singleton() {
+    }
+
+    public static Singleton getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    private static class Holder {
+        private static final Singleton INSTANCE = new Singleton();
+    }
+}
+```
+
+它的原理是外部类 `Singleton` 加载时不会立刻初始化内部类 `Holder`，只有第一次调用 `getInstance()` 主动使用 `Holder.INSTANCE` 时，JVM 才会初始化 `Holder`。类初始化过程由 ClassLoader/JVM 保证线程安全，并且类初始化完成对后续访问有 happens-before 关系，所以不需要手写 `volatile` 和 `synchronized`。这种方式适合无参单例，代码更简洁；需要传入运行时参数时通常不适合。
+
+面试总结：问“双重检查锁”时，关键点是 `volatile + 两次判空 + synchronized`；问“推荐单例实现”时，可以补充静态内部类 Holder、Kotlin `object`、枚举单例等更简单的方案。
 
 ### 88. 对象加载和类加载过程是什么？
 
@@ -503,7 +592,33 @@ AQS 是 AbstractQueuedSynchronizer，JUC 中很多同步器的基础。它用一
 
 ### 90. GC Roots 有哪些？
 
-常见 GC Roots 包括线程栈中的局部变量、静态字段、JNI 引用、活动线程、类加载器、同步锁持有对象等。可达性分析从 GC Roots 出发，无法到达的对象才可能被回收。
+GC Roots 可以理解为 GC 判断对象是否存活时的一批“起点对象”。GC 不会简单靠引用计数判断对象能不能回收，而是把堆里的对象看成一张引用关系图：从 GC Roots 出发，沿着强引用一路往下找，能被找到的对象就是可达对象，暂时不能回收；从任何 GC Root 都走不到的对象，就是不可达对象，才可能被回收。
+
+常见 GC Roots 包括：活动线程的线程栈局部变量、方法参数、静态字段、Class 对象、类加载器、JNI 引用、正在运行的线程对象、被 synchronized 持有的锁对象等。不同 JVM/ART 或 heap dump 工具展示名称会有差异，例如 LeakCanary/MAT 里可能看到 Thread、Java local、System class、JNI global、Native global、Monitor 等根类型。
+
+分析内存泄漏时看到的 “Path to GC Roots” 或 “Shortest strong reference path” 本质上就是可达性分析的结果。比如一个 Activity 已经执行了 `onDestroy()`，按业务预期应该没人再引用它；但 heap dump 中如果存在这样的强引用链：
+
+```text
+GC Root: main thread
+-> ThreadLocal/Looper
+-> MessageQueue
+-> Message
+-> callback Runnable
+-> Activity
+```
+
+那么 GC 从 main thread 这个根出发，仍然能一路走到这个 Activity，所以它就是“可达”的，GC 不能回收它。这就是 Handler 延迟消息、匿名内部类 Runnable 导致 Activity 泄漏的根本原因。再比如单例持有 Activity，链路可能是：
+
+```text
+GC Root: static field
+-> Singleton.INSTANCE
+-> context
+-> Activity
+```
+
+这里真正的问题不是 Activity 大小，而是它被一条从 GC Root 出发的强引用链保住了。修复内存泄漏，本质就是打断这条不该存在的强引用链，例如移除消息、注销监听、取消协程/Rx 订阅、把 Activity Context 换成 applicationContext、用弱引用或生命周期感知组件。
+
+要注意，弱引用、软引用、虚引用不会像普通强引用一样稳定地阻止对象回收。heap dump 工具通常会重点展示强引用路径，因为只有强引用链才是判断“为什么这个对象还活着”的关键。面试可以这样总结：GC Roots 是存活分析的起点，可达性分析就是从这些根对象沿强引用遍历对象图；内存泄漏就是一个本该死亡的对象仍然能从某个 GC Root 走到。
 
 ### 91. 垃圾回收机制和老年代算法是什么？
 
@@ -535,7 +650,45 @@ AtomicInteger 用 CAS 实现无锁原子更新，常用于引用计数、状态�
 
 ### 98. 线程池有哪些类型？原理是什么？
 
-核心参数包括 corePoolSize、maximumPoolSize、keepAliveTime、workQueue、ThreadFactory、RejectedExecutionHandler。常见封装有 FixedThreadPool、CachedThreadPool、SingleThreadExecutor、ScheduledThreadPool。实际项目更推荐显式创建 ThreadPoolExecutor，避免无界队列或无界线程导致 OOM。
+核心参数包括 corePoolSize、maximumPoolSize、keepAliveTime、unit、workQueue、ThreadFactory、RejectedExecutionHandler。常见封装有 FixedThreadPool、CachedThreadPool、SingleThreadExecutor、ScheduledThreadPool。实际项目更推荐显式创建 ThreadPoolExecutor，避免无界队列或无界线程导致 OOM。
+
+`ThreadPoolExecutor` 常见构造方法如下：
+
+```java
+ThreadPoolExecutor(
+    int corePoolSize,
+    int maximumPoolSize,
+    long keepAliveTime,
+    TimeUnit unit,
+    BlockingQueue<Runnable> workQueue,
+    ThreadFactory threadFactory,
+    RejectedExecutionHandler handler
+)
+```
+
+`corePoolSize` 是核心线程数。线程池中希望长期保留的基础线程数量，任务提交后如果当前工作线程数小于 corePoolSize，通常会优先创建核心线程执行任务，即使其他线程可能处于空闲状态。
+
+`maximumPoolSize` 是最大线程数。它表示线程池最多能创建多少个工作线程。注意它不一定马上生效：只有核心线程已满、队列也满了，线程池才会继续创建非核心线程，直到 maximumPoolSize。
+
+`keepAliveTime` 和 `unit` 表示空闲线程的存活时间。默认主要作用于超过 corePoolSize 的非核心线程：这些线程空闲超过指定时间后会被回收。如果调用 `allowCoreThreadTimeOut(true)`，核心线程空闲超时也可以被回收。
+
+`workQueue` 是任务队列，用来保存等待执行的 Runnable。常见队列包括 `LinkedBlockingQueue`、`ArrayBlockingQueue`、`SynchronousQueue`、`PriorityBlockingQueue`。队列类型会强烈影响线程池行为：无界队列容易堆积任务，有界队列能触发扩容和拒绝策略，`SynchronousQueue` 不存任务，通常会直接交给新线程或触发拒绝。
+
+`LinkedBlockingQueue` 是基于链表的阻塞队列。可以指定容量，如果不指定，默认容量接近 `Integer.MAX_VALUE`，所以常被称为无界队列。它适合任务量平稳、希望排队缓冲的场景，但在线程池里如果不设容量，任务生产速度大于消费速度时容易无限堆积，FixedThreadPool 和 SingleThreadExecutor 的 OOM 风险就来自这里。
+
+`ArrayBlockingQueue` 是基于数组的有界阻塞队列，创建时必须指定容量。它的边界更清晰，队列满了以后线程池才有机会继续扩容到 maximumPoolSize，或者触发拒绝策略。实际业务里想控制内存和排队长度，通常更偏向使用这类有界队列。
+
+`SynchronousQueue` 比较特殊，它不真正存储任务，可以理解成“直接交接队列”。提交任务时必须马上有工作线程来接收；如果没有空闲线程，线程池就倾向于创建新线程，直到 maximumPoolSize；如果线程也不能再创建，就触发拒绝策略。CachedThreadPool 内部就使用它，所以 CachedThreadPool 容易在高并发下创建大量线程。
+
+它的价值是不让任务在队列里堆积，而是把压力立刻反映到“扩线程”或“拒绝任务”上。适合任务很短、希望快速交给空闲线程、不希望排队等待的场景，例如大量短生命周期异步任务、生产者和消费者必须直接配对的交接场景。它不适合需要削峰填谷的业务，因为它没有缓冲能力；请求突然增多时，要么快速创建很多线程，要么快速触发拒绝。
+
+`PriorityBlockingQueue` 是带优先级的阻塞队列，任务会按优先级而不是提交顺序执行。它通常是无界队列，使用时任务需要实现 `Comparable`，或队列提供 Comparator。它适合确实有优先级调度的场景，但要注意低优先级任务可能长期得不到执行，并且无界特性同样可能导致任务堆积。
+
+`threadFactory` 用来创建线程。实际项目中常用它给线程命名、设置优先级、设置是否 daemon、统一捕获线程创建信息。线程名很重要，排查 ANR、崩溃、日志和性能问题时能快速定位任务来源。
+
+`handler` 是拒绝策略，也就是任务已经无法被接收时怎么办。触发条件通常是线程数达到 maximumPoolSize 且队列已满，或者线程池已经 shutdown。JDK 默认提供 AbortPolicy、CallerRunsPolicy、DiscardPolicy、DiscardOldestPolicy。
+
+任务提交后的典型流程是：如果工作线程数小于 corePoolSize，创建核心线程执行；否则尝试放入 workQueue；如果队列满了，再尝试创建非核心线程直到 maximumPoolSize；如果仍然无法处理，就执行拒绝策略。这个顺序解释了为什么不同队列会导致完全不同的表现。
 
 ### 99. 线程池拒绝策略有哪些？
 
@@ -543,7 +696,15 @@ AtomicInteger 用 CAS 实现无锁原子更新，常用于引用计数、状态�
 
 ### 100. 为什么阿里规范不建议直接使用 Executors 创建线程池？
 
-因为一些快捷工厂隐藏了风险：FixedThreadPool 和 SingleThreadExecutor 使用无界队列，可能 OOM；CachedThreadPool 最大线程数很大，可能创建过多线程。显式 ThreadPoolExecutor 能更清楚控制资源边界。
+因为一些快捷工厂隐藏了资源边界风险：FixedThreadPool 和 SingleThreadExecutor 使用无界队列，可能 OOM；CachedThreadPool 最大线程数很大，可能创建过多线程。显式 ThreadPoolExecutor 能更清楚控制资源边界。
+
+所谓“无界队列可能 OOM”，指的是 `Executors.newFixedThreadPool(n)` 和 `Executors.newSingleThreadExecutor()` 内部默认使用 `LinkedBlockingQueue`，不显式传容量时容量接近 `Integer.MAX_VALUE`，可以理解成业务上几乎没有上限。线程池执行任务的大致规则是：线程数没到 corePoolSize 时创建核心线程；核心线程满了以后，后续任务先进 workQueue；只有队列满了，才会继续创建非核心线程直到 maximumPoolSize；再满才触发拒绝策略。
+
+FixedThreadPool 的 corePoolSize 和 maximumPoolSize 相等，SingleThreadExecutor 的核心线程和最大线程都只有 1 个。由于它们的队列几乎不会“满”，所以任务一旦超过固定线程的处理速度，就不会触发拒绝策略，也不会扩容更多线程，而是不断堆到队列里。队列里的每个 Runnable/Callable 都是 Java 对象，还可能持有参数、网络请求、Bitmap、Activity、回调等引用；如果生产任务的速度长期大于消费速度，堆内存会被这些排队任务越占越多，最后触发 OOM。
+
+举例：SingleThreadExecutor 每秒只能处理 1 个上传任务，但业务每秒提交 100 个任务，剩下的 99 个任务会一直排队；如果没有容量限制、取消机制和降级策略，队列会越来越长。FixedThreadPool 也是类似，只是消费者从 1 个变成固定的 n 个。
+
+实际项目更推荐手动创建 `ThreadPoolExecutor`，使用有界队列，设置合理的核心线程数、最大线程数、拒绝策略、线程命名和监控。这样任务过载时能尽早暴露问题或降级处理，而不是无限排队直到 OOM。
 
 ## 四、Jetpack、架构与设计模式
 

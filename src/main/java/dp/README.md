@@ -10,6 +10,7 @@
 | `one/` | 一维 DP | `Fib`、`Main70爬楼梯`、`Main198打家劫舍`、`Main300最长上升子序列` |
 | `two/` | 二维 DP | `Main1143最长公共子序列` |
 | `tree/` | 树形 DP | `Main337打家劫舍III` |
+| `backpack/` | 背包 DP | `Main322零钱兑换`、`Main518零钱兑换II` |
 
 编译运行方式见 CLAUDE.md「带包名的文件」一节，例如：
 
