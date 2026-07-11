@@ -14,6 +14,7 @@
 | [第三章：算法思维](第三章_算法思维.md) | 回溯、滑动窗口、双指针、位运算、栈、前缀和、大数运算、DFS网格、区间合并、随机、树 | 38 |
 | [第四章：高频面试题](第四章_高频面试题.md) | 素数、快速幂、二分变体、二分答案、双指针、快慢指针、链表、括号、位运算、并查集、博弈 | 41 |
 | [第五章：计算机基础](第五章_计算机基础.md) | Shell命令、SQL题、正则匹配、通配符匹配、进程/线程/文件描述符、Cookie/Session/Token、加密、Java锁(synchronized/ReentrantLock/Condition)、交替打印 | 19 |
+| [Android Framework 高级面试专题](android-framework/README.md) | ActivityThread、AMS/ATMS、WMS、Binder、消息与帧、渲染、输入、OOM Adj、ANR、PMS/权限/AppOps | 10 篇 |
 
 ---
 
@@ -46,3 +47,12 @@
 - [synchronized](第五章_计算机基础.md#17-java-锁synchronized)
 - [ReentrantLock 与 Condition](第五章_计算机基础.md#18-java-锁reentrantlock-与-condition)
 - [两个线程交替打印](第五章_计算机基础.md#19-实战两个线程交替打印)
+
+### Android Framework
+
+- [Framework 专题总目录](android-framework/README.md)
+- [组件启动与 AMS / ATMS](android-framework/01_ActivityThread与组件启动.md)
+- [窗口、ViewRootImpl 与 WMS](android-framework/03_WindowManagerGlobal_ViewRootImpl_WMS.md)
+- [Binder、Handler 与渲染](android-framework/04_Binder_Java层.md)
+- [输入、进程治理与 ANR](android-framework/07_InputDispatcher到View.md)
+- [PMS、权限与 AppOps](android-framework/10_PMS_权限_AppOps基础.md)
